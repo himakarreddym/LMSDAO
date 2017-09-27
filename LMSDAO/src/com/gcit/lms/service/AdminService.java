@@ -11,6 +11,10 @@ public class AdminService {
 	
 	public Utilities util = new Utilities();
 	
+	/**
+	 * Author 
+	 * 
+	 */
 	public void saveAuthor(Author author) throws SQLException{
 		Connection conn = null;
 		try {
