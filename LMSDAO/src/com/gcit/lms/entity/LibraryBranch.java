@@ -3,7 +3,7 @@ package com.gcit.lms.entity;
 import java.io.Serializable;
 import java.util.List;
 
-public class LibraryBranches implements Serializable {
+public class LibraryBranch implements Serializable {
 	/**
 	 * 
 	 */
@@ -94,7 +94,7 @@ public class LibraryBranches implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		LibraryBranches other = (LibraryBranches) obj;
+		LibraryBranch other = (LibraryBranch) obj;
 		if (branchAddress == null) {
 			if (other.branchAddress != null)
 				return false;

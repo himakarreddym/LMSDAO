@@ -4,8 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import com.gcit.lms.entity.LibraryBranches;
-import com.gcit.lms.entity.BookCopies;
+import com.gcit.lms.entity.LibraryBranch;
 
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class LibraryBranchDAO extends BaseDAO {
@@ -14,7 +13,7 @@ public class LibraryBranchDAO extends BaseDAO {
 		super(conn);
 		// TODO Auto-generated constructor stub
 	}
-	public void saveBranches(LibraryBranches braches) throws SQLException {
+	public void saveLibraryBranches(LibraryBranch braches) throws SQLException {
 		save("INSERT INTO tbl_library_branch (branchName,branchAddress) VALUES (?,?)", new Object[] { braches.getBranchName(),braches.getBranchAddress() });
 	}
 	
@@ -24,22 +23,22 @@ public class LibraryBranchDAO extends BaseDAO {
 //		}
 //	}
 	
-	public Integer saveBranchesWithID(LibraryBranches braches) throws SQLException {
+	public Integer saveLibraryBranchesWithID(LibraryBranch braches) throws SQLException {
 		return saveWithID("INSERT INTO tbl_library_branch (branchName,branchAddress) VALUES (?,?)", new Object[] { braches.getBranchName(),braches.getBranchAddress() });
 	}
 
-	public void updateLibraryBranches(LibraryBranches braches) throws SQLException {
+	public void updateLibraryBranches(LibraryBranch braches) throws SQLException {
 		save("UPDATE tbl_library_branch SET branchName = ?,branchAddress=? WHERE branchId = ?",
 				new Object[] { braches.getBranchName(),braches.getBranchAddress() ,braches.getBranchId() });
 	}
 
-	public void deleteLibraryBranches(LibraryBranches braches) throws SQLException {
+	public void deleteLibraryBranches(LibraryBranch braches) throws SQLException {
 		save("DELETE FROM tbl_library_branch WHERE branchId = ?", new Object[] { braches.getBranchId() });
 	}
 	
 	
 
-	public List<LibraryBranches> readBranchs(String branchName) throws SQLException {
+	public List<LibraryBranch> readBranchs(String branchName) throws SQLException {
 		if(branchName !=null && !branchName.isEmpty()){
 			branchName = "%"+branchName+"%";
 			return readAll("SELECT * FROM tbl_library_branch WHERE branchName like ?", new Object[]{branchName});
@@ -50,11 +49,11 @@ public class LibraryBranchDAO extends BaseDAO {
 	}
 
 	@Override
-	public List<LibraryBranches> extractData(ResultSet rs) throws SQLException {
-		List<LibraryBranches> brachess = new ArrayList<>();
+	public List<LibraryBranch> extractData(ResultSet rs) throws SQLException {
+		List<LibraryBranch> brachess = new ArrayList<>();
 		BookCopiesDAO bcdao = new BookCopiesDAO(conn);
 		while(rs.next()){
-			LibraryBranches a = new LibraryBranches();
+			LibraryBranch a = new LibraryBranch();
 			a.setBranchId(rs.getInt("branchId"));
 			a.setBranchName(rs.getString("branchName"));
 			a.setBookcopies(bcdao.readAllFirstLevel("SELECT * FROM tbl_book_copies WHERE branchId = ?", new Object[]{a.getBranchId()}));
@@ -65,10 +64,10 @@ public class LibraryBranchDAO extends BaseDAO {
 	}
 	
 	@Override
-	public List<LibraryBranches> extractDataFirstLevel(ResultSet rs) throws SQLException {
-		List<LibraryBranches> brachess = new ArrayList<>();
+	public List<LibraryBranch> extractDataFirstLevel(ResultSet rs) throws SQLException {
+		List<LibraryBranch> brachess = new ArrayList<>();
 		while(rs.next()){
-			LibraryBranches a = new LibraryBranches();
+			LibraryBranch a = new LibraryBranch();
 			a.setBranchId(rs.getInt("branchId"));
 			a.setBranchName(rs.getString("branchName"));
 			a.setBranchAddress(rs.getString("branchAddress"));

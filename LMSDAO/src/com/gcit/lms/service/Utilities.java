@@ -6,10 +6,10 @@ import java.sql.SQLException;
 
 public class Utilities {
 
-	public String driver = "com.mysql.cj.jdbc.Driver";
-	public String url = "jdbc:mysql://localhost/library?useSSL=false";
-	public String user = "root";
-	public String password = "root";
+	private String driver = "com.mysql.jdbc.Driver";
+	private String url = "jdbc:mysql://localhost/library?useSSL=false";
+	private String user = "root";
+	private String password = "12345";
 
 	public Connection getConnection()
 			throws SQLException, InstantiationException, IllegalAccessException, ClassNotFoundException {

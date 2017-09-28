@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import com.gcit.lms.entity.BookLoans;
 import com.gcit.lms.entity.Book;
-import com.gcit.lms.entity.LibraryBranches;
+import com.gcit.lms.entity.LibraryBranch;
 import com.gcit.lms.entity.Borrower;
 
 
@@ -45,7 +45,7 @@ public class BookLoansDAO extends BaseDAO {
 	
 	
 
-	public List<BookLoans> readBookLoanss(Integer bookid, Integer branchid, Integer cardno) throws SQLException {
+	public List<BookLoans> readBookLoans(Integer bookid, Integer branchid, Integer cardno) throws SQLException {
 		if(bookid != 0 && branchid != 0 && cardno != 0){
 			return readAll("SELECT * FROM tbl_book_loans WHERE bookId = ? AND branchId = ? AND cardNo= ?", 
 					new Object[]{bookid,branchid,cardno});
@@ -71,7 +71,7 @@ public class BookLoansDAO extends BaseDAO {
 			a.setDateIn(rs.getTimestamp("dateIn"));
 			List<Book> bk = (bdao.readAllFirstLevel("SELECT * FROM tbl_book WHERE bookId = ?", new Object[]{a.getBookId()}));
 			a.setBook(bk.get(0));
-			List<LibraryBranches> lb = (lbdao.readAllFirstLevel("SELECT * FROM tbl_library_branch WHERE branchId = ?", new Object[]{a.getBranchId()}));
+			List<LibraryBranch> lb = (lbdao.readAllFirstLevel("SELECT * FROM tbl_library_branch WHERE branchId = ?", new Object[]{a.getBranchId()}));
 			a.setBranch(lb.get(0));
 			List<Borrower> br = (brdao.readAllFirstLevel("SELECT * FROM tbl_borrower WHERE cardNo = ?", new Object[]{a.getCardNo()}));
 			a.setBorrower(br.get(0));

@@ -13,7 +13,7 @@ public class BookCopies implements Serializable {
 	private Integer copies;
 	
 	private Book book;
-	private LibraryBranches branch;
+	private LibraryBranch branch;
 	
 	
 	/**
@@ -67,13 +67,13 @@ public class BookCopies implements Serializable {
 	/**
 	 * @return the branch
 	 */
-	public LibraryBranches getBranch() {
+	public LibraryBranch getBranch() {
 		return branch;
 	}
 	/**
 	 * @param branch the branch to set
 	 */
-	public void setBranch(LibraryBranches branch) {
+	public void setBranch(LibraryBranch branch) {
 		this.branch = branch;
 	}
 	/* (non-Javadoc)

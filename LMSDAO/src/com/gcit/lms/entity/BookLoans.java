@@ -16,7 +16,7 @@ public class BookLoans implements Serializable{
 	private Date dateIn;
 	
 	private Book book;
-	private LibraryBranches branch;
+	private LibraryBranch branch;
 	private Borrower borrower;
 	/**
 	 * @return the bookId
@@ -105,13 +105,13 @@ public class BookLoans implements Serializable{
 	/**
 	 * @return the branch
 	 */
-	public LibraryBranches getBranch() {
+	public LibraryBranch getBranch() {
 		return branch;
 	}
 	/**
 	 * @param branch the branch to set
 	 */
-	public void setBranch(LibraryBranches branch) {
+	public void setBranch(LibraryBranch branch) {
 		this.branch = branch;
 	}
 	/**

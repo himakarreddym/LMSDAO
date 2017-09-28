@@ -8,7 +8,7 @@ import java.util.List;
 
 import com.gcit.lms.entity.Book;
 import com.gcit.lms.entity.BookCopies;
-import com.gcit.lms.entity.LibraryBranches;
+import com.gcit.lms.entity.LibraryBranch;
 
 
 @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -44,7 +44,7 @@ public class BookCopiesDAO extends BaseDAO {
 	
 	
 
-	public List<BookCopies> readPublishers(int bookId, int branchId) throws SQLException {
+	public List<BookCopies> readBookCopies(int bookId, int branchId) throws SQLException {
 		if(bookId !=0 && branchId !=0 ){
 			return readAll("SELECT * FROM tbl_book_copies WHERE bookId = ? AND branchId = ?", new Object[]{bookId,branchId});
 		}else{
@@ -65,7 +65,7 @@ public class BookCopiesDAO extends BaseDAO {
 			a.setCopies(rs.getInt("noOfCopies"));
 			List<Book> bk = (bdao.readAllFirstLevel("SELECT * FROM tbl_book WHERE bookId = ?", new Object[]{a.getBookId()}));
 			a.setBook(bk.get(0));
-			List<LibraryBranches> lb = (lbdao.readAllFirstLevel("SELECT * FROM tbl_library_branch WHERE branchId = ?", new Object[]{a.getBranchId()}));
+			List<LibraryBranch> lb = (lbdao.readAllFirstLevel("SELECT * FROM tbl_library_branch WHERE branchId = ?", new Object[]{a.getBranchId()}));
 			a.setBranch(lb.get(0));
 			bookcopiess.add(a);
 		}
