@@ -14,7 +14,7 @@
 	<tr><td><a href="genre.jsp">Genre Services</a></td></tr>
 	<tr><td><a href="publisher.jsp">Publisher Services</a></td></tr>
 	<tr><td><a href="borrower1.jsp">BorrowerServices</a></td></tr>
-	<tr><td><a href="Librarybranch.jsp">BorrowerServices</a></td></tr>
+	<tr><td><a href="Librarybranch.jsp">Library Branch Services</a></td></tr>
 	
 </table>
 </body>

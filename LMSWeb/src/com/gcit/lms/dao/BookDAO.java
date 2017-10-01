@@ -18,7 +18,10 @@ public class BookDAO extends BaseDAO {
 	}
 
 	public void saveBook(Book book) throws SQLException {
-		save("INSERT INTO tbl_book (bookName) VALUES (?)", new Object[] { book.getTitle() });
+		save("INSERT INTO tbl_book (title) VALUES (?)", new Object[] { book.getTitle() });
+	}
+	public void saveBookwithPub(Book book) throws SQLException {
+		save("INSERT INTO tbl_book (title,pubId) VALUES (?,?)", new Object[] { book.getTitle(),book.getPublisher().getPublisherId() });
 	}
 	
 	public void saveBookAuthor(Book book) throws SQLException {
@@ -28,15 +31,18 @@ public class BookDAO extends BaseDAO {
 	}
 	
 	public Integer saveBookID(Book book) throws SQLException {
-		return saveWithID("INSERT INTO tbl_book (bookName) VALUES (?)", new Object[] { book.getTitle() });
+		return saveWithID("INSERT INTO tbl_book (title) VALUES (?)", new Object[] { book.getTitle() });
 	}
 
 	public void updateBook(Book book) throws SQLException {
-		save("UPDATE tbl_book SET bookName = ? WHERE bookId = ?", new Object[] { book.getTitle(), book.getBookId() });
+		save("UPDATE tbl_book SET title = ? WHERE bookId = ?", new Object[] { book.getTitle(), book.getBookId() });
 	}
 
 	public void deleteBook(Book book) throws SQLException {
 		save("DELETE FROM tbl_book WHERE bookId = ?", new Object[] { book.getBookId() });
+	}
+	public Integer getBooksCount() throws SQLException {
+		return getCount("SELECT count(*) as COUNT FROM tbl_book", null);
 	}
 
 	public List<Book> readAllBooks() throws SQLException {
@@ -56,7 +62,16 @@ public class BookDAO extends BaseDAO {
 		return null;
 	}
 	
-	
+	public List<Book> readBooksDAO(String bookTitle, Integer pageNo) throws SQLException {
+		setPageNo(pageNo);
+		if(bookTitle !=null && !bookTitle.isEmpty()){
+			bookTitle = "%"+bookTitle+"%";
+			return readAll("SELECT * FROM tbl_book WHERE title like ?", new Object[]{bookTitle});
+		}else{
+			return readAll("SELECT * FROM tbl_book", null);
+		}
+		
+	}
 
 	@Override
 	public List extractData(ResultSet rs) throws SQLException {

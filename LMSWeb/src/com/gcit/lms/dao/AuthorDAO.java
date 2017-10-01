@@ -44,6 +44,10 @@ public class AuthorDAO extends BaseDAO {
 		save("DELETE FROM tbl_book_authors WHERE authorId = ? AND bookId = ?", new Object[] { author.getAuthorId(),bookId });
 	}
 	
+	public List<Author> readAllAuthors() throws SQLException {
+		return readAll("SELECT * FROM tbl_author", null);
+	}
+	
 	public Integer getAuthorsCount() throws SQLException {
 		return getCount("SELECT count(*) as COUNT FROM tbl_author", null);
 	}

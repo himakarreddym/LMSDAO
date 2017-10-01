@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.gcit.lms.entity.Author;
+import com.gcit.lms.entity.Book;
 import com.gcit.lms.entity.Borrower;
 import com.gcit.lms.entity.Genre;
 import com.gcit.lms.entity.LibraryBranch;
@@ -24,7 +25,8 @@ import com.gcit.lms.service.AdminService;
 	"/addGenre","/pageGenres","/deleteGenre","/deleteGenreBook","/editGenre",
 	"/addPublisher","/deletePublisher","/pagePublishers","/editPublisher",
 	"/addBorrower","/editBorrower","/deleteBorrower","/pageBorrowers",
-	"/addbranch","/pageLibraryBranchs","/editLibraryBranch","/deleteLibraryBranch"})
+	"/addbranch","/pageLibraryBranchs","/editLibraryBranch","/deleteLibraryBranch",
+	"/addBook","/pageBooks","/deleteBook","/editBook","/deleteBookAuthor"})
 public class AdminServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -82,6 +84,15 @@ public class AdminServlet extends HttpServlet {
 		case "/deleteLibraryBranch":
 			redirectUrl= deleteLibraryBranch(request, response, "/viewbranches.jsp");
 			break;
+		case "/pageBooks":
+			redirectUrl=pageBooks(request,response,"/viewbooks.jsp");
+			break;
+		case "/deleteBook":
+			redirectUrl=deleteBook(request,response,"/viewbooks.jsp");
+			break;
+		case "/deleteBookAuthor":
+			redirectUrl=deleteBookAuthor(request,response,"/viewbooks.jsp");
+			break;
 			
 		default:
 			break;
@@ -129,7 +140,12 @@ public class AdminServlet extends HttpServlet {
 		case "/editLibraryBranch":
 			redirectUrl=addbranch(request, "/viewbranches.jsp", true);
 			break;
-			
+		case "/addBook":
+			redirectUrl = addBook(request, "/viewbooks.jsp", false);
+			break;
+		case "/editBook":
+			redirectUrl = addBook(request, "/viewbooks.jsp", true);
+			break;
 		default:
 			break;
 		}
@@ -138,6 +154,101 @@ public class AdminServlet extends HttpServlet {
 		rd.forward(request, response);
 		
 	}
+	
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+	private String addBook(HttpServletRequest request, String redirectUrl, Boolean editMode) {
+		Book book = new Book();
+		String message = "Book added Sucessfully";
+		
+		if (request.getParameter("bookName") != null && !request.getParameter("bookName").isEmpty()) {
+			if(request.getParameter("bookName").length() > 45){
+				message = "Book Name cannot be more than 45 chars";
+				redirectUrl = "/addbook.jsp";
+			}else{
+				book.setTitle(request.getParameter("bookName"));
+				String[] authorIds = request.getParameterValues("authorIds");
+				try {
+					if(authorIds !=null)
+						book.setAuthors(adminService.getAuthors(authorIds));
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				if(editMode){
+					book.setBookId(Integer.parseInt(request.getParameter("bookId")));
+				}
+				try {
+					adminService.saveBook(book);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}else{
+			message = "Book Name cannot be Empty";
+			redirectUrl = "/addbook.jsp";
+		}
+		request.setAttribute("statusMessage", message);
+		return redirectUrl;
+	}
+	
+	private String pageBooks(HttpServletRequest request, HttpServletResponse response, String redirectUrl)
+			throws ServletException, IOException {
+		if(request.getParameter("pageNo")!=null){
+			Integer pageNo = Integer.parseInt(request.getParameter("pageNo"));
+			try {
+				request.setAttribute("books", adminService.readBooks(null, pageNo));
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			return redirectUrl;
+		}
+		return null;
+	}
+	
+	private String deleteBook(HttpServletRequest request, HttpServletResponse response, String redirectUrl)
+			throws ServletException, IOException {
+		String message = "Book deleted Sucessfully";
+		if(request.getParameter("bookId")!=null){
+			Integer bookId = Integer.parseInt(request.getParameter("bookId"));
+			Book book = new Book();
+			book.setBookId(bookId);
+			try {
+				adminService.deleteBook(book);
+			} catch (SQLException e) {
+				e.printStackTrace();
+				message = "Book deletion failed. Contact Admin";
+			}
+			request.setAttribute("statusMessage", message);
+			return redirectUrl;
+		}
+		
+		return null;
+	}
+	private String deleteBookAuthor(HttpServletRequest request, HttpServletResponse response, String redirectUrl)
+			throws ServletException, IOException {
+		String message = "Author deleted Sucessfully for this Book";
+		if(request.getParameter("authorId")!=null && request.getParameter("bookId")!=null){
+			Integer authorId = Integer.parseInt(request.getParameter("authorId"));
+			Integer bookId = Integer.parseInt(request.getParameter("bookId"));
+			Author author = new Author();
+			author.setAuthorId(authorId);
+			try {
+				adminService.deleteBookAuthor(author,bookId);
+				request.setAttribute("bookId",bookId);
+				redirectUrl = "/editbooks.jsp";
+				
+			} catch (SQLException e) {
+				e.printStackTrace();
+				message = "Author deleted failed with the book. Contact Admin";
+			}
+			request.setAttribute("statusMessage", message);
+			return redirectUrl;
+		}
+		
+		return null;
+	}
+	
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 	private String addbranch(HttpServletRequest request, String redirectUrl, Boolean editMode) {
