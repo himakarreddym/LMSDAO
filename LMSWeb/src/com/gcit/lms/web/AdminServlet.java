@@ -114,14 +114,7 @@ public class AdminServlet extends HttpServlet {
 		case "/pageBookLoans":
 			redirectUrl=pageBookLoans(request,response,"/OverrideDuedate.jsp");
 			break;
-		case "/override":
-			try {
-				redirectUrl=overridedate(request,"/overidedate.jsp");
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			break;
+	
 		
 			
 		default:
@@ -187,6 +180,14 @@ public class AdminServlet extends HttpServlet {
 		case "/addbranchBook":
 			redirectUrl = addbranchBook(request, "/bookbranch.jsp");
 			break;
+		case "/override":
+			try {
+				redirectUrl=overridedate(request,"/overidedate.jsp");
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			break;
 		
 		default:
 			break;
@@ -200,7 +201,7 @@ public class AdminServlet extends HttpServlet {
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 	private String addbranchBook(HttpServletRequest request, String redirectUrl) {
 		BookCopies bookCopies = new BookCopies();
-		String message = "No of copies Added sucesfully for the book";
+		String message = "<div class=\"alert alert-success alert-dismissable custom-alert\" role=\"alert\"><strong>Success!!!</strong>No of copies Added sucesfully for the book</div>";
 		
 		if(request.getParameter("noofCopies") != null && request.getParameter("branchId") != null && request.getParameter("bookId") != null) {
 		int noofCopies = Integer.parseInt(request.getParameter("noofCopies"));
@@ -216,7 +217,7 @@ public class AdminServlet extends HttpServlet {
 		} catch (SQLException e) {
 		e.printStackTrace();
 		}}else{
-		message = "Book Copies cannot be Empty";
+			message = "<div class=\"alert alert-danger alert-dismissable custom-alert\" role=\"alert\">Book Copies cannot be Empty</div>";
 		}
 		request.setAttribute("statusMessage", message);
 		 return redirectUrl;
@@ -239,29 +240,31 @@ public class AdminServlet extends HttpServlet {
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 	private String editdueDate(HttpServletRequest request, String redirectUrl) throws ParseException {
 		BookLoans bookloans = new BookLoans();
-		String message = "Successfully overrided the Due date ";
+		String message = "<div class=\"alert alert-success alert-dismissable custom-alert\" role=\"alert\"><strong>Success!!!</strong>Successfully overrided the Due date</div>";
 		int bookId = Integer.parseInt(request.getParameter("bookId"));
 		int branchId = Integer.parseInt(request.getParameter("branchId"));
 		int cardNo = Integer.parseInt(request.getParameter("CardNo"));
-		Timestamp dateOut = Timestamp.valueOf(request.getParameter("dateOut"));
+		Timestamp dateOut = Timestamp.valueOf((request.getParameter("dateOut")));
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Date date1 =sdf.parse(request.getParameter("newdueDate"));
-		Timestamp newdueDate = (Timestamp) new java.sql.Timestamp(date1.getTime());
-		if(bookId !=0 && branchId !=0 && cardNo !=0) {
-			bookloans.setBookId(bookId);	
-			bookloans.setBranchId(branchId);;	
-			bookloans.setCardNo(cardNo);	
-			bookloans.setDateOut(dateOut);
-			bookloans.setDueDate(newdueDate);
-				try {
-					adminService.updatedueDate(bookloans);;
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-		}else{
-			message = "Currently You cannot override the book the book!! Sorry for inconvinience ";
+			Timestamp newdueDate = (Timestamp) new java.sql.Timestamp(date1.getTime());
+			if(bookId !=0 && branchId !=0 && cardNo !=0) {
+				bookloans.setBookId(bookId);	
+				bookloans.setBranchId(branchId);;	
+				bookloans.setCardNo(cardNo);	
+				bookloans.setDateOut(dateOut);
+				bookloans.setDueDate(newdueDate);
+					try {
+						adminService.updatedueDate(bookloans);;
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+			}
+				else{
+			message = "<div class=\"alert alert-danger alert-dismissable custom-alert\" role=\"alert\">Currently You cannot override the book the book!! Sorry for inconvinience</div>";
 			redirectUrl = "/OverrideDuedate.jsp";
-		}
+				}
+		
 		request.setAttribute("statusMessage", message);
 		return redirectUrl;
 	}
@@ -285,11 +288,11 @@ public class AdminServlet extends HttpServlet {
 	private String addBook(HttpServletRequest request, String redirectUrl, Boolean editMode) {
 		Book book = new Book();
 		Publisher pub = new Publisher();
-		String message = "Book added Sucessfully";
+		String message = "<div class=\"alert alert-success alert-dismissable custom-alert\" role=\"alert\"><strong>Success!!!</strong>Book added Sucessfully</div>";
 		
 		if (request.getParameter("bookName") != null && !request.getParameter("bookName").isEmpty()) {
 			if(request.getParameter("bookName").length() > 45){
-				message = "Book Name cannot be more than 45 chars";
+				message = "<div class=\"alert alert-danger alert-dismissable custom-alert\" role=\"alert\">Book Name cannot be more than 45 chars</div>";
 				redirectUrl = "/addbook.jsp";
 			}else{
 				book.setTitle(request.getParameter("bookName"));
@@ -325,7 +328,7 @@ public class AdminServlet extends HttpServlet {
 				}
 			}
 		}else{
-			message = "Book Name cannot be Empty";
+			message = "<div class=\"alert alert-danger alert-dismissable custom-alert\" role=\"alert\"><strong>Warning!</strong>Book Name cannot be Empty</div>";
 			redirectUrl = "/addbook.jsp";
 		}
 		request.setAttribute("statusMessage", message);
@@ -348,7 +351,7 @@ public class AdminServlet extends HttpServlet {
 	
 	private String deleteBook(HttpServletRequest request, HttpServletResponse response, String redirectUrl)
 			throws ServletException, IOException {
-		String message = "Book deleted Sucessfully";
+		String message = "<div class=\"alert alert-success alert-dismissable custom-alert\" role=\"alert\"><strong>Success!!!</strong>Book deleted Sucessfully</div>";
 		if(request.getParameter("bookId")!=null){
 			Integer bookId = Integer.parseInt(request.getParameter("bookId"));
 			Book book = new Book();
@@ -357,7 +360,7 @@ public class AdminServlet extends HttpServlet {
 				adminService.deleteBook(book);
 			} catch (SQLException e) {
 				e.printStackTrace();
-				message = "Book deletion failed. Contact Admin";
+				message = "<div class=\"alert alert-danger alert-dismissable custom-alert\" role=\"alert\"><strong>Warning!</strong>Book deletion failed. Contact Admin</div>";
 			}
 			request.setAttribute("statusMessage", message);
 			return redirectUrl;
@@ -367,7 +370,7 @@ public class AdminServlet extends HttpServlet {
 	}
 	private String deleteBookAuthor(HttpServletRequest request, HttpServletResponse response, String redirectUrl)
 			throws ServletException, IOException {
-		String message = "Author deleted Sucessfully for this Book";
+		String message = "<div class=\"alert alert-success alert-dismissable custom-alert\" role=\"alert\"><strong>Success!!!</strong>Author deleted Sucessfully for this Book</div>";
 		if(request.getParameter("authorId")!=null && request.getParameter("bookId")!=null){
 			Integer authorId = Integer.parseInt(request.getParameter("authorId"));
 			Integer bookId = Integer.parseInt(request.getParameter("bookId"));
@@ -380,7 +383,7 @@ public class AdminServlet extends HttpServlet {
 				
 			} catch (SQLException e) {
 				e.printStackTrace();
-				message = "Author deleted failed with the book. Contact Admin";
+				message = "<div class=\"alert alert-danger alert-dismissable custom-alert\" role=\"alert\"><strong>Warning!</strong>Author deleted failed with the book. Contact Admin</div>";
 			}
 			request.setAttribute("statusMessage", message);
 			return redirectUrl;
@@ -391,7 +394,7 @@ public class AdminServlet extends HttpServlet {
 	
 	private String deletebookPublisher(HttpServletRequest request, HttpServletResponse response, String redirectUrl)
 			throws ServletException, IOException, SQLException {
-		String message = "Publisher deleted Sucessfully for this Book";
+		String message = "<div class=\"alert alert-success alert-dismissable custom-alert\" role=\"alert\"><strong>Success!!!</strong>Publisher deleted Sucessfully for this Book</div>";
 		if(request.getParameter("bookId")!=null){
 			Integer bookId = Integer.parseInt(request.getParameter("bookId"));
 			Book book = new Book();
@@ -406,7 +409,7 @@ public class AdminServlet extends HttpServlet {
 				
 			} catch (SQLException e) {
 				e.printStackTrace();
-				message = "Author deleted failed. Contact Admin";
+				message = "<div class=\"alert alert-danger alert-dismissable custom-alert\" role=\"alert\"><strong>Warning!</strong>Author deleted failed. Contact Admin</div>";
 			}
 			request.setAttribute("statusMessage", message);
 			return redirectUrl;
@@ -419,11 +422,11 @@ public class AdminServlet extends HttpServlet {
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 	private String addbranch(HttpServletRequest request, String redirectUrl, Boolean editMode) {
 		LibraryBranch branch = new LibraryBranch();
-		String message = "Entered Add Branch";
+		String message = null;
 		
 		if (request.getParameter("branchName") != null && !request.getParameter("branchName").isEmpty()) {
 		if(request.getParameter("branchName").length() > 45){
-		message = "Branch Name cannot be more than 45 chars";
+			message = "<div class=\"alert alert-danger alert-dismissable custom-alert\" role=\"alert\"><strong>Warning!</strong>Branch Name cannot be more than 45 chars</div>";
 		redirectUrl = "/addbranch.jsp";
 		}else{
 		branch.setBranchName(request.getParameter("branchName"));
@@ -434,14 +437,14 @@ public class AdminServlet extends HttpServlet {
 		}
 		try {
 		int branchid1 = adminService.saveLibraryBranch(branch);
-		message  = "LibraryBranch Added/Updated Sucessfully";
+		message = "<div class=\"alert alert-success alert-dismissable custom-alert\" role=\"alert\"><strong>Success!!!</strong>LibraryBranch Added/Updated Sucessfully</div>";
 		request.setAttribute("branchId", branchid1);
 		} catch (SQLException e) {
 		e.printStackTrace();
 		}
 		}
 		}else{
-		message = "LibraryBranch Name cannot be Empty";
+			message = "<div class=\"alert alert-danger alert-dismissable custom-alert\" role=\"alert\"><strong>Warning!</strong>LibraryBranch Name cannot be Empty</div>";
 		redirectUrl = "/addbranch.jsp";
 		}
 		request.setAttribute("statusMessage", message);
@@ -462,7 +465,7 @@ public class AdminServlet extends HttpServlet {
 	}
 	private String deleteLibraryBranch(HttpServletRequest request, HttpServletResponse response, String redirectUrl)
 			throws ServletException, IOException {
-		String message = "Branch deleted Sucessfully";
+		String message = "<div class=\"alert alert-success alert-dismissable custom-alert\" role=\"alert\"><strong>Success!!!</strong>Branch deleted Sucessfully</div>";
 		if(request.getParameter("branchId")!=null){
 			Integer branchId = Integer.parseInt(request.getParameter("branchId"));
 			LibraryBranch lb = new LibraryBranch();
@@ -471,7 +474,7 @@ public class AdminServlet extends HttpServlet {
 				adminService.deleteLibraryBranch(lb);
 			} catch (SQLException e) {
 				e.printStackTrace();
-				message = "Branch delete failed. Contact Admin";
+				message = "<div class=\"alert alert-danger alert-dismissable custom-alert\" role=\"alert\"><strong>Warning!</strong>Branch delete failed. Contact Admin</div>";
 			}
 			request.setAttribute("statusMessage", message);
 			return redirectUrl;
@@ -483,11 +486,11 @@ public class AdminServlet extends HttpServlet {
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 	private String addBorrower(HttpServletRequest request, String redirectUrl, Boolean editMode) {
 		Borrower borrower = new Borrower();
-		String message = "Entered Add Borrower";
+		String message = null;
 		
 		if (request.getParameter("borrowerName") != null && !request.getParameter("borrowerName").isEmpty()) {
 		if(request.getParameter("borrowerName").length() > 45){
-		message = "Borrower Name cannot be more than 45 chars";
+			message = "<div class=\"alert alert-danger alert-dismissable custom-alert\" role=\"alert\"><strong>Warning!</strong>Borrower Name cannot be more than 45 chars</div>";
 		redirectUrl = "/addborrower.jsp";
 		}else{
 		borrower.setName(request.getParameter("borrowerName"));
@@ -499,13 +502,13 @@ public class AdminServlet extends HttpServlet {
 		}
 		try {
 		adminService.saveBorrower(borrower);
-		message  = "Borrower added Sucessfully";
+		message = "<div class=\"alert alert-success alert-dismissable custom-alert\" role=\"alert\"><strong>Success!!!</strong>Borrower added Sucessfully</div>";
 		} catch (SQLException e) {
 		e.printStackTrace();
 		}
 		}
 		}else{
-		message = "Borrower Name cannot be Empty";
+			message = "<div class=\"alert alert-danger alert-dismissable custom-alert\" role=\"alert\"><strong>Warning!</strong>Borrower Name cannot be Empty</div>";
 		redirectUrl = "/addborrower.jsp";
 		}
 		request.setAttribute("statusMessage", message);
@@ -514,7 +517,7 @@ public class AdminServlet extends HttpServlet {
 	
 	private String deleteBorrower(HttpServletRequest request, HttpServletResponse response, String redirectUrl)
 			throws ServletException, IOException {
-		String message = "Borrower deleted Sucessfully";
+		String message = "<div class=\"alert alert-success alert-dismissable custom-alert\" role=\"alert\"><strong>Success!!!</strong>Borrower deleted Sucessfully</div>";
 		if(request.getParameter("cardNo")!=null){
 			Integer borrowerId = Integer.parseInt(request.getParameter("cardNo"));
 			Borrower bor = new Borrower();
@@ -523,7 +526,7 @@ public class AdminServlet extends HttpServlet {
 				adminService.deleteBorrower(bor);
 			} catch (SQLException e) {
 				e.printStackTrace();
-				message = "Borrower deleted failed. Contact Admin";
+				message = "<div class=\"alert alert-danger alert-dismissable custom-alert\" role=\"alert\"><strong>Warning!</strong>Borrower deleted failed. Contact Admin</div>";
 			}
 			request.setAttribute("statusMessage", message);
 			return redirectUrl;
@@ -550,11 +553,11 @@ public class AdminServlet extends HttpServlet {
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 	private String addPublisher(HttpServletRequest request, String redirectUrl, Boolean editMode) {
 		Publisher publisher = new Publisher();
-		String message = "Entered Add Publisher";
+		String message = null;
 		
 		if (request.getParameter("publisherName") != null && !request.getParameter("publisherName").isEmpty()) {
 		if(request.getParameter("publisherName").length() > 45){
-		message = "Publisher Name cannot be more than 45 chars";
+			message = "<div class=\"alert alert-danger alert-dismissable custom-alert\" role=\"alert\"><strong>Warning!</strong>Publisher Name cannot be more than 45 chars</div>";
 		redirectUrl = "/addpublisher.jsp";
 		}else{
 		publisher.setPublisherName(request.getParameter("publisherName"));
@@ -566,13 +569,13 @@ public class AdminServlet extends HttpServlet {
 		}
 		try {
 		adminService.savePublisher(publisher);
-		message  = "Publisher added Sucessfully";
+		message = "<div class=\"alert alert-success alert-dismissable custom-alert\" role=\"alert\"><strong>Success!!!</strong>Publisher added Sucessfully</div>";
 		} catch (SQLException e) {
 		e.printStackTrace();
 		}
 		}
 		}else{
-		message = "Publisher Name cannot be Empty";
+			message = "<div class=\"alert alert-danger alert-dismissable custom-alert\" role=\"alert\"><strong>Warning!</strong>Publisher Name cannot be Empty</div>";
 		redirectUrl = "/addpublisher.jsp";
 		}
 		request.setAttribute("statusMessage", message);
@@ -595,7 +598,7 @@ public class AdminServlet extends HttpServlet {
 	
 	private String deletePublisher(HttpServletRequest request, HttpServletResponse response, String redirectUrl)
 			throws ServletException, IOException {
-		String message = "Publisher deleted Sucessfully";
+		String message = "<div class=\"alert alert-success alert-dismissable custom-alert\" role=\"alert\"><strong>Success!!!</strong>Publisher deleted Sucessfully</div>";
 		if(request.getParameter("publisherId")!=null){
 			Integer publisherId = Integer.parseInt(request.getParameter("publisherId"));
 			Publisher publisher = new Publisher();
@@ -604,7 +607,7 @@ public class AdminServlet extends HttpServlet {
 				adminService.deletePublisher(publisher);
 			} catch (SQLException e) {
 				e.printStackTrace();
-				message = "Publisher deleted failed. Contact Admin";
+				message = "<div class=\"alert alert-danger alert-dismissable custom-alert\" role=\"alert\"><strong>Warning!</strong>Publisher deleted failed. Contact Admin</div>";
 			}
 			request.setAttribute("statusMessage", message);
 			return redirectUrl;
@@ -619,11 +622,11 @@ public class AdminServlet extends HttpServlet {
 	
 		private String addGenre(HttpServletRequest request, String redirectUrl, Boolean editMode) {
 		Genre genre = new Genre();
-		String message = "Entered Add genre";
+		String message = null;
 		
 		if (request.getParameter("genreName") != null && !request.getParameter("genreName").isEmpty()) {
 		if(request.getParameter("genreName").length() > 45){
-		message = "Genre Name cannot be more than 45 chars";
+			message = "<div class=\"alert alert-danger alert-dismissable custom-alert\" role=\"alert\"><strong>Warning!</strong>Genre Name cannot be more than 45 chars</div>";
 		redirectUrl = "/addgenre.jsp";
 		}else{
 		genre.setGenreName(request.getParameter("genreName"));
@@ -640,13 +643,13 @@ public class AdminServlet extends HttpServlet {
 		}
 		try {
 		adminService.saveGenre(genre);
-		message  = "Genre added Sucessfully";
+		message = "<div class=\"alert alert-success alert-dismissable custom-alert\" role=\"alert\"><strong>Success!!!</strong>Genre added Sucessfully</div>";
 		} catch (SQLException e) {
 		e.printStackTrace();
 		}
 		}
 		}else{
-		message = "Genre Name cannot be Empty";
+			message = "<div class=\"alert alert-danger alert-dismissable custom-alert\" role=\"alert\"><strong>Warning!</strong>Genre Name cannot be Empty</div>";
 		redirectUrl = "/addgenre.jsp";
 		}
 		request.setAttribute("statusMessage", message);
@@ -655,7 +658,7 @@ public class AdminServlet extends HttpServlet {
 		
 		private String deleteGenreBook(HttpServletRequest request, HttpServletResponse response, String redirectUrl)
 				throws ServletException, IOException {
-			String message = "Book deleted Sucessfully for this Genre";
+			String message = "<div class=\"alert alert-success alert-dismissable custom-alert\" role=\"alert\"><strong>Success!!!</strong>Book deleted Sucessfully for this Genre</div>";
 			if(request.getParameter("genreId")!=null && request.getParameter("bookId")!=null){
 				Integer genreId = Integer.parseInt(request.getParameter("genreId"));
 				Integer bookId = Integer.parseInt(request.getParameter("bookId"));
@@ -668,7 +671,7 @@ public class AdminServlet extends HttpServlet {
 					
 				} catch (SQLException e) {
 					e.printStackTrace();
-					message = "Genre deleted failed. Contact Admin";
+					message = "<div class=\"alert alert-danger alert-dismissable custom-alert\" role=\"alert\"><strong>Warning!</strong>Genre deleted failed. Contact Admin</div>";
 				}
 				request.setAttribute("statusMessage", message);
 				return redirectUrl;
@@ -678,7 +681,7 @@ public class AdminServlet extends HttpServlet {
 		}
 		private String deleteGenreBook1(HttpServletRequest request, HttpServletResponse response, String redirectUrl)
 				throws ServletException, IOException {
-			String message = "Book deleted Sucessfully for this Genre";
+			String message = "<div class=\"alert alert-success alert-dismissable custom-alert\" role=\"alert\"><strong>Success!!!</strong>Book deleted Sucessfully for this Genre</div>";
 			if(request.getParameter("genreId")!=null && request.getParameter("bookId")!=null){
 				Integer genreId = Integer.parseInt(request.getParameter("genreId"));
 				Integer bookId = Integer.parseInt(request.getParameter("bookId"));
@@ -691,7 +694,7 @@ public class AdminServlet extends HttpServlet {
 					
 				} catch (SQLException e) {
 					e.printStackTrace();
-					message = "Genre deleted failed. Contact Admin";
+					message = "<div class=\"alert alert-danger alert-dismissable custom-alert\" role=\"alert\"><strong>Warning!</strong>Genre deleted failed. Contact Admin</div>";
 				}
 				request.setAttribute("statusMessage", message);
 				return redirectUrl;
@@ -716,7 +719,7 @@ public class AdminServlet extends HttpServlet {
 		
 		private String deleteGenre(HttpServletRequest request, HttpServletResponse response, String redirectUrl)
 				throws ServletException, IOException {
-			String message = "Genre deleted Sucessfully";
+			String message = "<div class=\"alert alert-success alert-dismissable custom-alert\" role=\"alert\"><strong>Success!!!</strong>Genre deleted Sucessfully</div>";
 			if(request.getParameter("genreId")!=null){
 				Integer genreId = Integer.parseInt(request.getParameter("genreId"));
 				Genre genre = new Genre();
@@ -725,7 +728,7 @@ public class AdminServlet extends HttpServlet {
 					adminService.deleteGenre(genre);
 				} catch (SQLException e) {
 					e.printStackTrace();
-					message = "Genre deleted failed. Contact Admin";
+					message = "<div class=\"alert alert-danger alert-dismissable custom-alert\" role=\"alert\"><strong>Warning!</strong>Genre deleted failed. Contact Admin</div>";
 				}
 				request.setAttribute("statusMessage", message);
 				return redirectUrl;
@@ -737,7 +740,7 @@ public class AdminServlet extends HttpServlet {
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 	private String deleteAuthorBook(HttpServletRequest request, HttpServletResponse response, String redirectUrl)
 			throws ServletException, IOException {
-		String message = "Book deleted Sucessfully for this Author";
+		String message = "<div class=\"alert alert-success alert-dismissable custom-alert\" role=\"alert\"><strong>Success!!!</strong>Book deleted Sucessfully for this Author</div>";
 		if(request.getParameter("authorId")!=null && request.getParameter("bookId")!=null){
 			Integer authorId = Integer.parseInt(request.getParameter("authorId"));
 			Integer bookId = Integer.parseInt(request.getParameter("bookId"));
@@ -750,7 +753,7 @@ public class AdminServlet extends HttpServlet {
 				
 			} catch (SQLException e) {
 				e.printStackTrace();
-				message = "Author deleted failed. Contact Admin";
+				message = "<div class=\"alert alert-danger alert-dismissable custom-alert\" role=\"alert\"><strong>Warning!</strong>Author deleted failed. Contact Admin</div>";
 			}
 			request.setAttribute("statusMessage", message);
 			return redirectUrl;
@@ -761,11 +764,11 @@ public class AdminServlet extends HttpServlet {
 
 	private String addAuthor(HttpServletRequest request, String redirectUrl, Boolean editMode) {
 		Author author = new Author();
-		String message = "Author added Sucessfully";
+		String message = "<div class=\"alert alert-success alert-dismissable custom-alert\" role=\"alert\"><strong>Success!!!</strong>Author added Sucessfully</div>";
 		
 		if (request.getParameter("authorName") != null && !request.getParameter("authorName").isEmpty()) {
 			if(request.getParameter("authorName").length() > 45){
-				message = "Author Name cannot be more than 45 chars";
+				message = "<div class=\"alert alert-danger alert-dismissable custom-alert\" role=\"alert\"><strong>Warning!</strong>Author Name cannot be more than 45 chars</div>";
 				redirectUrl = "/addauthor.jsp";
 			}else{
 				author.setAuthorName(request.getParameter("authorName"));
@@ -787,7 +790,7 @@ public class AdminServlet extends HttpServlet {
 				}
 			}
 		}else{
-			message = "Author Name cannot be Empty";
+			message = "<div class=\"alert alert-danger alert-dismissable custom-alert\" role=\"alert\">Author Name cannot be empty.</div>";
 			redirectUrl = "/addauthor.jsp";
 		}
 		request.setAttribute("statusMessage", message);
@@ -795,7 +798,7 @@ public class AdminServlet extends HttpServlet {
 	}
 	private String deleteAuthor(HttpServletRequest request, HttpServletResponse response, String redirectUrl)
 			throws ServletException, IOException {
-		String message = "Author deleted Sucessfully";
+		String message = "<div class=\"alert alert-success alert-dismissable custom-alert\" role=\"alert\"><strong>Success!!!</strong>Author deleted Sucessfully</div>";
 		if(request.getParameter("authorId")!=null){
 			Integer authorId = Integer.parseInt(request.getParameter("authorId"));
 			Author author = new Author();
@@ -804,7 +807,7 @@ public class AdminServlet extends HttpServlet {
 				adminService.deleteAuthor(author);
 			} catch (SQLException e) {
 				e.printStackTrace();
-				message = "Author deleted failed. Contact Admin";
+				message = "<div class=\"alert alert-danger alert-dismissable custom-alert\" role=\"alert\"><strong>Warning!</strong>Author deleted failed. Contact Admin</div>";
 			}
 			request.setAttribute("statusMessage", message);
 			return redirectUrl;

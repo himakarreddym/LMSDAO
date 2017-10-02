@@ -22,14 +22,11 @@
 		books = service.readBooks(null, 1);
 	}
 %>
-<%
-	if (request.getAttribute("statusMessage") != null) {
-		out.println(request.getAttribute("statusMessage"));
-	}
-%>
-<div class="container">
-	<h1>List of Books in LMS&nbsp;&nbsp;&nbsp;&nbsp; Total Books in LMS: <%=totalCount%> Books</h1>
-	<nav aria-label="Page navigation example">
+
+<div class="container" style="text-align:center;margin-top:45px;">
+${statusMessage}
+	<h3>Books List in LMS&nbsp;&nbsp;&nbsp;&nbsp; Total Books in LMS: <%=totalCount%> Books</h3>
+	<nav aria-label="Page navigation example"  >
 		<ul class="pagination">
 			<li class="page-item"><a class="page-link" href="#"
 				aria-label="Previous"> <span aria-hidden="true">&laquo;</span> <span

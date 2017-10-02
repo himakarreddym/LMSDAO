@@ -9,16 +9,45 @@
 Publisher publisher = service.readPublisherByPK(Integer.parseInt(request.getParameter("publisherId")));
 %>
 
-<div class="container">
-    
-	<form method="post" action="editPublisher">
+<div class="container" style="margin-top: 45px;">
+     <h3 style="padding-left: 35%;"> Enter the new details of the Publisher</h3> <br>
+	<form method="post" action="editPublisher"style="text-align:center;padding-left: 20%; ">
 		${statusMessage}
-		<br/>Enter Publisher Name to Edit: <input type="text" name="publisherName" value="<%=publisher.getPublisherName()%>"><br />
-		<br/>Enter Publisher Address to Edit: <input type="text" name="publisherAddress" value="<%=publisher.getPublisherAddress()%>"><br />
-		<br/>Enter Publisher Phone to Edit: <input type="text" name="publisherPhone" value="<%=publisher.getPublisherPhone()%>"><br />
-		<input type="hidden" name="publisherId" value="<%=publisher.getPublisherId()%>"><br/>
+		<table class="table table-striped" style="width: 80%">
+		<tr>
+			<td>
+				Enter Publisher Name to Edit
+				</td>
+			<td>
+			<input type="text" name="publisherName" value="<%=publisher.getPublisherName()%>"style="width: 180px;">
+			</td>
+		</tr>
+		<tr>	
+			<td>
+			Enter Publisher Address to Edit
+			</td>
+			<td>
+			<input type="text" name="publisherAddress" value="<%=publisher.getPublisherAddress()%>">
+			</td>
+		</tr>
+		<tr>
+			<td>
+			Enter Publisher Phone to Edit
+			</td>
+			<td>
+			 <input type="text" name="publisherPhone" value="<%=publisher.getPublisherPhone()%>">
+			</td>
+		</tr>
+		
+        <tr>
+			<td>
+			<input type="hidden" name="publisherId" value="<%=publisher.getPublisherId()%>">
+			</td>
+		 </tr>
+		
+       </table> 
         
-		<button type="submit" class="btn btn-primary btn-sm">Update Publisher</button><br/><br/>
+		<button type="submit" class="btn btn-primary btn-md"style="margin-right: 20% ">Update Publisher</button><br/><br/>
        
             
 	</form>

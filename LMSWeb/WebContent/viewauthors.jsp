@@ -20,13 +20,9 @@
 		authors = service.readAuthors(null, 1);
 	}
 %>
-<%
-	if (request.getAttribute("statusMessage") != null) {
-		out.println(request.getAttribute("statusMessage"));
-	}
-%>
-<div class="container">
-	<h1>List of Authors in LMS&nbsp;&nbsp;&nbsp;&nbsp; Total Authors in LMS: <%=totalCount%> Authors</h1>
+${statusMessage}
+<div class="container" style="text-align:center;margin-top:45px;">
+	<h3 >Authors List in LMS&nbsp;&nbsp;&nbsp;&nbsp; Total Authors in LMS: <%=totalCount%> Authors</h3>
 	<nav aria-label="Page navigation example">
 		<ul class="pagination">
 			<li class="page-item"><a class="page-link" href="#"

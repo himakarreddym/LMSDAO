@@ -64,7 +64,7 @@ public class LibrarianServlet extends HttpServlet {
 	
 	private String updateBranch(HttpServletRequest request, String redirectUrl) {
 		LibraryBranch branch = new LibraryBranch();
-		String message = "Branch Information Updated sucessfully";
+		String message = "<div class=\"alert alert-success alert-dismissable custom-alert\" role=\"alert\"><strong>Success!!!</strong>Branch Information Updated sucessfully</div>";
 		branch.setBranchId(Integer.parseInt(request.getParameter("branchId")));
 		
 		
@@ -80,7 +80,7 @@ public class LibrarianServlet extends HttpServlet {
 				}
 		}
 		else{
-			message = "Book Copies should be atleast 1";
+			message = "<div class=\"alert alert-danger alert-dismissable custom-alert\" role=\"alert\"><strong>Warning!</strong>Book Copies should be atleast 1</div>";
 			redirectUrl = "/editbookcopies.jsp";
 		}
 		request.setAttribute("statusMessage", message);
@@ -90,7 +90,7 @@ public class LibrarianServlet extends HttpServlet {
 	
 	private String updateCopies(HttpServletRequest request, String redirectUrl) {
 		BookCopies bookCopies = new BookCopies();
-		String message = "Book Copies Updated sucessfully";
+		String message = "<div class=\"alert alert-success alert-dismissable custom-alert\" role=\"alert\"><strong>Success!!!</strong>Book Copies Updated sucessfully</div>";
 		bookCopies.setBookId(Integer.parseInt(request.getParameter("bookId")));
 		bookCopies.setBranchId(Integer.parseInt(request.getParameter("branchId")));
 		bookCopies.setCopies(Integer.parseInt(request.getParameter("noOfCopies")));
@@ -102,7 +102,7 @@ public class LibrarianServlet extends HttpServlet {
 				}
 			}
 		else{
-			message = "Book Copies should be atleast 1";
+			message = "<div class=\"alert alert-danger alert-dismissable custom-alert\" role=\"alert\"><strong>Warning!</strong>Book Copies should be atleast 1</div>";
 			redirectUrl = "/editbookcopies.jsp";
 		}
 		request.setAttribute("statusMessage", message);

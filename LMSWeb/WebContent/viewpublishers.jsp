@@ -22,13 +22,10 @@
 		publishers = service.readPublisher(null, 1);
 	}
 %>
-<%
-	if (request.getAttribute("statusMessage") != null) {
-		out.println(request.getAttribute("statusMessage"));
-	}
-%>
-<div class="container">
-	<h1>List of Publishers in LMS&nbsp;&nbsp;&nbsp;&nbsp; Total Publishers in LMS: <%=totalCount%> Publishers</h1>
+
+<div class="container" style="text-align:center;margin-top:45px;">
+${statusMessage}
+	<h3>List of Publishers in LMS&nbsp;&nbsp;&nbsp;&nbsp; Total Publishers in LMS: <%=totalCount%> Publishers</h3>
 	<nav aria-label="Page navigation example">
 		<ul class="pagination">
 			<li class="page-item"><a class="page-link" href="#"

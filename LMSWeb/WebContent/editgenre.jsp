@@ -10,16 +10,16 @@ List<Book> books = service.readBooks();
 List<Book> genreBooks = genre.getBooks();
 %>
 
-<div class="container">
+<div class="container"style="text-align: center;margin-top: 45px;">
     
 	<form method="post" action="editGenre">
 		${statusMessage}
 		<br/>Enter Genre Name to Edit: <input type="text" name="genreName" value="<%=genre.getGenreName()%>"><br />
 		<input type="hidden" name="genreId" value="<%=genre.getGenreId()%>"><br/>
 		
-		<div class="form-group">
+		<div class="form-group" style="float: left;width: 46%;padding-left: 2%">
 		<label for="sel1">Select Books from list Below: </label>
-		<select class="form-control" id="sel1" multiple="multiple" size="10" name="bookIds">
+		<select class="form-control" id="sel1" multiple="multiple" size="10" name="bookIds" style="width:80%;">
 			<option value="">Select Book to associate</option>
 			<%for(Book b: books) {
 			if(! genreBooks.contains(b)) { %>
@@ -27,9 +27,10 @@ List<Book> genreBooks = genre.getBooks();
 			<%}} %>
 		</select>
 		 </div>
-		 <br /> <br />
+		
         
-		<button type="submit" class="btn btn-primary btn-sm">Update Genre</button><br/><br/>
+		
+		<div style="float: left;width: 54%;margin-top: 30px;margin-bottom: 50px;">
         <table class="table table-striped">
     		<tr>
     			<th> Books by this Genre </th>
@@ -48,7 +49,12 @@ List<Book> genreBooks = genre.getBooks();
 				
 		<%	}%>
          </table>
-            
+       </div>  
+       <div >
+      
+       <button type="submit" class="btn btn-primary btn-sm">Update Genre</button><br/><br/>   
+     
+       </div>
 	</form>
     </div>
     

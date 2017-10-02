@@ -12,7 +12,7 @@ Timestamp dateOut = Timestamp.valueOf(request.getParameter("dateOut"));
 Timestamp dueDate = Timestamp.valueOf(request.getParameter("dueDate"));
 
 %>
-<div class="container">
+<div class="container" style="text-align: center;margin-top: 16%">
 	<h2>Override new due date</h2>
 	<form method="post" action="editdueDate">
 		${statusMessage}

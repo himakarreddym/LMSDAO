@@ -3,6 +3,7 @@ package com.gcit.lms.web;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -87,9 +88,8 @@ public class BorrowerServlet extends HttpServlet {
 			bor = borService.readBorrowerByPK(Integer.parseInt(request.getParameter("cardNo")));
 			System.out.println("bor"+bor);
 			if(bor != null) {
-				message = "Welcome Mr/Mrs :" +bor.getName();
+				message = "<div class=\"alert alert-success alert-dismissable custom-alert\" role=\"alert\"><strong>Welcome Mr/Mrs :"+bor.getName() +"</strong></div>";
 				request.setAttribute("cardNo", bor.getCardNo());
-				System.out.println("Card Ni is:   "+request.getParameter("branchId"));
 				if(request.getParameter("branchId") == null) {
 				request.setAttribute("branchId", 1);
 				}
@@ -100,13 +100,12 @@ public class BorrowerServlet extends HttpServlet {
 				
 			}
 			else{
-				message = "Please enter the valid card number and Try Again!!!!";
+				message = "<div class=\"alert alert-danger alert-dismissable custom-alert\" role=\"alert\"><strong>Warning!</strong>Please enter the valid card number and Try Again!!!!</div>";
 				redirectUrl = "/borrower.jsp";
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			System.out.println("-----------"+e.toString());
-//			e.printStackTrace();
+			e.printStackTrace();
 		}
 		request.setAttribute("statusMessage", message);
 		return redirectUrl;
@@ -114,7 +113,7 @@ public class BorrowerServlet extends HttpServlet {
 	
 	private String checkoutBook(HttpServletRequest request, String redirectUrl) {
 		BookLoans bookloans = new BookLoans();
-		String message = "Sucessfully Borrowered the book!!!Enjoy Reading!!!";
+		String message = "<div class=\"alert alert-success alert-dismissable custom-alert\" role=\"alert\"><strong>Success!!!</strong>Sucessfully Borrowered the book!!!Enjoy Reading!!!</div>";
 		int bookId = Integer.parseInt(request.getParameter("bookId"));
 		int branchId = Integer.parseInt(request.getParameter("branchId"));
 		int cardNo = Integer.parseInt(request.getParameter("cardNo"));
@@ -140,7 +139,7 @@ public class BorrowerServlet extends HttpServlet {
 					e.printStackTrace();
 				}
 		}else{
-			message = "Currently You cannot borrow the book!! Sorry for inconvinience ";
+			message = "<div class=\"alert alert-danger alert-dismissable custom-alert\" role=\"alert\"><strong>Warning!</strong>Currently You cannot borrow the book!! Sorry for inconvinience</div>";
 			redirectUrl = "/borrowermenu.jsp";
 		}
 		request.setAttribute("statusMessage", message);
@@ -158,8 +157,8 @@ public class BorrowerServlet extends HttpServlet {
 		Timestamp dateOut;
 		Date dueDate;
 		if(bookId !=0 && branchId !=0 && cardNo !=0) {
-		dateOut = Timestamp.valueOf(request.getParameter("dateOut"));
-		dueDate = Timestamp.valueOf(request.getParameter("dueDate"));
+		dateOut = Timestamp.valueOf((request.getParameter("dateOut")));
+		dueDate = Timestamp.valueOf((request.getParameter("dueDate")));
 			bookloans.setBookId(bookId);	
 			bookloans.setBranchId(branchId);;	
 			bookloans.setCardNo(cardNo);	
@@ -175,7 +174,7 @@ public class BorrowerServlet extends HttpServlet {
 			List<BookCopies> bookcopies = borService.readBookCopies(bc);
 			BookCopies bc1 = bookcopies.get(0);
 			bc.setCopies(bc1.getCopies() + 1);
-			message = "Sucessfully Returned the book!!!Thank You !!!";
+			message = "<div class=\"alert alert-success alert-dismissable custom-alert\" role=\"alert\"><strong>Success!!!</strong>Sucessfully Returned the book!!!Thank You !!!</div>";
 			borService.saveBookCopies(bc);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -183,7 +182,7 @@ public class BorrowerServlet extends HttpServlet {
 		}
 				
 		}else{
-			message = "Currently You cannot borrow the book!! Sorry for inconvinience ";
+			message = "<div class=\"alert alert-danger alert-dismissable custom-alert\" role=\"alert\"><strong>Warning!</strong>Currently You cannot borrow the book!! Sorry for inconvinience</div>";
 			redirectUrl = "/borrowermenu.jsp";
 		}
 		request.setAttribute("statusMessage", message);

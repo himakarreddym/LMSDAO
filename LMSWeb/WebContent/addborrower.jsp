@@ -4,14 +4,38 @@
 <%@page import="java.util.List"%>
 <%@page import="com.gcit.lms.service.AdminService"%>
 
-<div class="container">
-	<h2>Add New Borrower</h2>
-	<form method="post" action="addBorrower">
-	${statusMessage}
-		<br/>Enter Borrower Name: <input type="text" name="borrowerName"><br />
-		<br/>Enter Borrower Address: <input type="text" name="borrowerAddress"><br />
-		<br/>Enter Borrower Phone: <input type="text" name="borrowerPhone"><br />
-		 <br/>
-		<button type="submit" class="btn btn-primary btn-md">Save Borrower</button>
+<div class="container"style="margin-top: 45px;">
+<h3 style="padding-left: 40%;">Add New Borrower</h3> <br>
+	<form method="post" action="addBorrower"style="text-align:center;padding-left: 15%;">	
+		${statusMessage}
+		<table class="table table-striped" style="width: 80%">
+		<tr>
+			<td>
+				Enter Borrower Name
+				</td>
+			<td>
+			<input type="text" name="borrowerName">
+			</td>
+		</tr>
+		<tr>	
+			<td>
+			Enter Borrower Address
+			</td>
+			<td>
+			<input type="text" name="borrowerAddress">
+			</td>
+		</tr>
+		<tr>
+			<td>
+			Enter Borrower Phone number
+			</td>
+			<td>
+			 <input type="text" name="borrowerPhone">
+			</td>
+		</tr>
+		
+		
+       </table> 
+		<button type="submit" class="btn btn-primary btn-md"style="margin-right: 15%">Save Borrower</button>
 	</form>
 </div>

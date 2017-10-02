@@ -6,18 +6,18 @@
 <%AdminService service = new AdminService();
 List<Book> books = service.readBooks();
 %>
-<div class="container">
-	<h2>Add New Genre</h2>
+<div class="container" style="text-align: center;margin-top: 45px;">
+	<h3>Add New Genre</h3> <br>
 	<form method="post" action="addGenre">
 	${statusMessage}
-		<br/>Enter Genre Name: <input type="text" name="genreName"><br /><br /><br />
+		<br/>Enter Genre Name: <input type="text" name="genreName"><br /><br />
 		 <br/>
 		
 		<%-- Div class for select tag --%> 
-		
-		<div class="form-group">
 		<label for="sel1">Select Books from list Below: </label>
-		<select class="form-control" id="sel1" multiple="multiple" size="10" name="bookIds">
+		<div class="form-group" style="padding-left: 22%;">
+		
+		<select class="form-control" id="sel1" multiple="multiple" size="10" name="bookIds" style="width:80%;">
 			<option value="">Select Book to associate</option>
 			<%for(Book b: books) {%>
 			<option value=<%=b.getBookId()%>><%=b.getTitle() %></option>

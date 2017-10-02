@@ -1,3 +1,4 @@
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="com.gcit.lms.entity.BookLoans"%>
 <%@page import="com.gcit.lms.service.AdminService"%>
 <%@page import="com.sun.xml.internal.txw2.Document"%>
@@ -6,7 +7,6 @@
 <%@page import="com.gcit.lms.entity.BookCopies"%>
 <%@include file="boot.htm" %>
 <%@page import="com.gcit.lms.service.LibrarianService"%>
-<%@include file="boot.htm" %>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
 <%@page import="com.gcit.lms.entity.LibraryBranch"%>
@@ -25,11 +25,12 @@ if(request.getAttribute("bookloans")!=null){
 }else{
 	bookloans = adminServive.readBookLoansPage(1);
 }
+SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM YYY, HH:mm");
 
 %>
-<div class="container">
+<div class="container" style="text-align: center;margin-top:45px;">
 		${statusMessage}
-		<div class="form-group">
+		<div>
 		<label for="sel1">Select Book to Override the due date from list Below: </label>
 		<nav aria-label="Page navigation example">
 		<ul class="pagination">
@@ -57,12 +58,12 @@ if(request.getAttribute("bookloans")!=null){
     		</tr>
     		<tr>	
     		<% for (BookLoans bl : bookloans) { %>
-    			<form  action="override">
-    		<input type="hidden" name="bookId" value="<%=bl.getBookId()%>"><br/>
-    		<input type="hidden" name=branchId value="<%=bl.getBranchId()%>"><br/>
-    		<input type="hidden" name="CardNo" value="<%=bl.getCardNo()%>"><br/>
-    		<input type="hidden" name="dateOut" value="<%=bl.getDateOut()%>"><br/>
-    		<input type="hidden" name="dueDate" value="<%=bl.getDueDate()%>"><br/>
+    			<form  method="post" action="override">
+    		<input type="hidden" name="bookId" value="<%=bl.getBookId()%>">
+    		<input type="hidden" name=branchId value="<%=bl.getBranchId()%>">
+    		<input type="hidden" name="CardNo" value="<%=bl.getCardNo()%>">
+    		<input type="hidden" name="dateOut" value="<%=bl.getDateOut()%>">
+    		<input type="hidden" name="dueDate" value="<%=bl.getDueDate()%>">
     		<tr>
     			<td>
     			<% 	out.println(bl.getBook().getTitle()); %>	 <br />
@@ -74,10 +75,10 @@ if(request.getAttribute("bookloans")!=null){
     			<% 	out.println(bl.getBorrower().getName()); %>	 <br />
     			 </td>
     			 <td>
-    			<% 	out.println(bl.getDateOut()); %>	 <br />
+    			<% 	out.println(dateFormat.format(bl.getDateOut())); %>	 <br />
     			 </td>
     			 <td>
-    			<% 	out.println(bl.getDueDate()); %>	 <br />
+    			<% 	out.println(dateFormat.format(bl.getDueDate())); %>	 <br />
     			 </td>
     			 <td><button type="submit"
 					class="btn btn-danger btn-sm">Override</button>

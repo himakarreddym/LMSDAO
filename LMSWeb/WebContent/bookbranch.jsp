@@ -17,15 +17,15 @@ List<Integer> bookIds = new ArrayList<Integer>();
 		bookIds.add(bc.getBookId());
 	} 
 %>
-<div class="container">
-	${statusMessage}
+<div class="container" style="text-align: center;margin-top:45px;">
+	${statusMessage} <br>	<br>
 		 <%-- Div class for select tag --%> 
 		<button type="button"
 					onclick="javascript:location.href='viewbranches.jsp'"
-					class="btn btn-danger btn-sm">Add </button>
-		<div class="form-group">
+					class="btn btn-danger btn-md">View Branches </button> <br> <br>
 		<label for="sel1">Enter number of copies for the books from list Below: </label>
-		 <table class="table table-striped">
+		<div class="form-group" style="padding-top: 20px;padding-left: 18%;">
+		 <table class="table table-striped" style="width:80%;">
 		<tr>
 			<th>Book Title</th>
 			<th>Number of copies</th>

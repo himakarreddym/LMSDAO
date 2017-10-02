@@ -23,13 +23,10 @@
 		branches = service.readBranch(null, 1);
 	}
 %>
-<%
-	if (request.getAttribute("statusMessage") != null) {
-		out.println(request.getAttribute("statusMessage"));
-	}
-%>
-<div class="container" >
-	<h3>List of LibraryBranchs in LMS&nbsp;&nbsp;&nbsp;&nbsp; Total LibraryBranchs in LMS: <%=totalCount%> LibraryBranchs</h3>
+
+<div class="container" style="text-align:center;margin-top:35px;" >
+${statusMessage}
+	<h4>List of LibraryBranchs in LMS&nbsp;&nbsp;&nbsp;&nbsp; Total LibraryBranchs in LMS: <%=totalCount%> LibraryBranchs</h4>
 	<nav aria-label="Page navigation example" style="text-align: center">
 		<ul class="pagination">
 			<li class="page-item"><a class="page-link" href="#"

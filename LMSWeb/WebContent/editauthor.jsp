@@ -9,16 +9,16 @@ Author author = service.readAuthorByPK(Integer.parseInt(request.getParameter("au
 List<Book> books = service.readBooks();
 List<Book> authorBooks = author.getBooks();
 %>
-
-<div class="container">
+<div class="container" style="text-align:center;">
     
 	<form method="post" action="editAuthor">
 		${statusMessage}
 		<br/>Enter Author Name to Edit: <input type="text" name="authorName" value="<%=author.getAuthorName()%>"><br />
 		<input type="hidden" name="authorId" value="<%=author.getAuthorId()%>"><br/>
-        	<div class="form-group">
+		
 		<label for="sel1">Select Books from list Below: </label>
-		<select class="form-control" id="sel1" multiple="multiple" size="10" name="bookIds">
+        	<div class="form-group" style="width:90%;display:inline-block;padding-left: 20%">
+		<select class="form-control" id="sel1" multiple="multiple" size="10" name="bookIds" style="width:70%;">
 			<%for(Book b: books) {
 			if(! authorBooks.contains(b)) {
 			%>
@@ -52,5 +52,4 @@ List<Book> authorBooks = author.getBooks();
             
 	</form>
     </div>
-    
     

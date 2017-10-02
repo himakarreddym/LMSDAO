@@ -12,8 +12,8 @@ List<Publisher> publishers =service.readPublishers();
 List<Genre> genres =service.readGenres();
 
 %>
-<div class="container">
-	<h2>Add New Book</h2>
+<div class="container" style="text-align:center;margin-top:45px;">
+	<h3>Add New Book</h3>
 	<form method="post" action="addBook">
 	${statusMessage}
 		<br/>Enter Book Title: <input type="text" name="bookName"><br /><br /><br />
@@ -46,6 +46,8 @@ List<Genre> genres =service.readGenres();
 			<%} %>
 		</select>
 		 </div>
-		<button type="submit" class="btn btn-primary btn-md">Save Author</button>
+		 <div style="text-align:center">
+		<button type="submit" class="btn btn-primary btn-md">Save Book</button>
+		</div>
 	</form>
 </div>

@@ -8,6 +8,7 @@
 <%@page import="java.util.List"%>
 <%@page import="com.gcit.lms.entity.Author"%>
 <%
+
 	AdminService service = new AdminService();
 	Integer totalCount = service.getBorrowersCount();
 	int numOfPages = 0;
@@ -23,13 +24,10 @@
 		borrowers = service.readBorrowers(null, 1);
 	}
 %>
-<%
-	if (request.getAttribute("statusMessage") != null) {
-		out.println(request.getAttribute("statusMessage"));
-	}
-%>
-<div class="container">
-	<h1>List of Borrowers in LMS&nbsp;&nbsp;&nbsp;&nbsp; Total Borrowers in LMS: <%=totalCount%> Borrowers</h1>
+
+${statusMessage}
+<div class="container"style="text-align:center;margin-top:45px;">
+	<h3>List of Borrowers in LMS&nbsp;&nbsp;&nbsp;&nbsp; Total Borrowers in LMS: <%=totalCount%> Borrowers</h3>
 	<nav aria-label="Page navigation example">
 		<ul class="pagination">
 			<li class="page-item"><a class="page-link" href="#"
@@ -45,7 +43,7 @@
 			</a></li>
 		</ul>
 	</nav>
-	<table class="table table-striped">
+	<table class="table table-striped" >
 		<tr>
 			<th>#</th>
 			<th>Borrower Name</th>
@@ -62,9 +60,6 @@
 			<td><%=a.getName()%></td>
 			<td><%=a.getAddress()%></td>
 			<td><%=a.getPhone()%></td>
-			<td>
-				
-			</td>
 			<td><button type="button"
 					onclick="javascript:location.href='editborrower.jsp?cardNo=<%=a.getCardNo()%>'"
 					class="btn btn-primary btn-sm">Edit</button></td>
