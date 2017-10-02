@@ -41,7 +41,7 @@ ${statusMessage}
 	<table class="table table-striped">
 		<tr>
 			<th>#</th>
-			<th>Author Name</th>
+			<th>Author Name </th>
 			<th>Books Written</th>
 			<th>Edit Author</th>
 			<th>Delete Author</th>
@@ -52,13 +52,14 @@ ${statusMessage}
 		<tr>
 			<td><%=authors.indexOf(a) + 1%></td>
 			<td><%=a.getAuthorName()%></td>
-			<td>
+			 <td>
+                        <ul style="padding-right:50%;list-style-type: none;">
 				<%
-					for (Book b : a.getBooks()) {
-							out.println(b.getTitle() + "|");
-						}
-				%>
-			</td>
+					for (Book b : a.getBooks()) {  %>
+						<li>	<%out.println(b.getTitle()); %></li>
+						<% 	} %> 
+                        </ul> 
+			         </td>
 			<td><button type="button"
 					onclick="javascript:location.href='editauthor.jsp?authorId=<%=a.getAuthorId()%>'"
 					class="btn btn-primary btn-sm">Edit</button></td>

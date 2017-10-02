@@ -64,20 +64,20 @@ ${statusMessage}
 				%> 
 			</td>
 			
-			<td>
-				 <%
-					for (Genre g : b.getGenres()) {
-							out.println(g.getGenreName() + "|");
-						}
-				%> 
+			  <td>
+                <ul style="padding-right:50%;list-style-type: none;">
+				 <% for (Genre g : b.getGenres()) {%>
+						<li>	<%out.println(g.getGenreName());%></li>
+					<%	} %> 
+                </ul> 
 			</td>
 			
 			<td>
-				 <%
-					for (Author a : b.getAuthors()) {
-							out.println(a.getAuthorName() + "|");
-						}
-				%> 
+                <ul style="padding-right:50%;list-style-type: none;">
+				 <%for (Author a : b.getAuthors()) {%>
+						<li>	<%out.println(a.getAuthorName());%></li>
+					<%	} %> 
+                        </ul> 
 			</td>
 			<td><button type="button"
 					onclick="javascript:location.href='editbooks.jsp?bookId=<%=b.getBookId()%>'"

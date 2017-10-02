@@ -17,7 +17,7 @@ List<Book> books = service.readBooks();
 		<label for="sel1">Select Books from list Below: </label>
 		<div class="form-group" style="padding-left: 22%;">
 		
-		<select class="form-control" id="sel1" multiple="multiple" size="10" name="bookIds" style="width:80%;">
+		<select class="form-group" id="sel1" multiple="multiple" size="10" name="bookIds" style="width:80%;">
 			<option value="">Select Book to associate</option>
 			<%for(Book b: books) {%>
 			<option value=<%=b.getBookId()%>><%=b.getTitle() %></option>

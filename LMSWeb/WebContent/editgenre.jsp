@@ -19,7 +19,7 @@ List<Book> genreBooks = genre.getBooks();
 		
 		<div class="form-group" style="float: left;width: 46%;padding-left: 2%">
 		<label for="sel1">Select Books from list Below: </label>
-		<select class="form-control" id="sel1" multiple="multiple" size="10" name="bookIds" style="width:80%;">
+		<select class="form-group" id="sel1" multiple="multiple" size="10" name="bookIds" style="width:80%;">
 			<option value="">Select Book to associate</option>
 			<%for(Book b: books) {
 			if(! genreBooks.contains(b)) { %>
@@ -51,10 +51,8 @@ List<Book> genreBooks = genre.getBooks();
          </table>
        </div>  
        <div >
-      
-       <button type="submit" class="btn btn-primary btn-sm">Update Genre</button><br/><br/>   
-     
        </div>
+       <button type="submit" class="btn btn-primary btn-sm">Update Genre</button><br/><br/> 
 	</form>
     </div>
     

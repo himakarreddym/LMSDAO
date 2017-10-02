@@ -248,6 +248,7 @@ public class AdminServlet extends HttpServlet {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Date date1 =sdf.parse(request.getParameter("newdueDate"));
 			Timestamp newdueDate = (Timestamp) new java.sql.Timestamp(date1.getTime());
+			if(newdueDate.after(new Date())) {
 			if(bookId !=0 && branchId !=0 && cardNo !=0) {
 				bookloans.setBookId(bookId);	
 				bookloans.setBranchId(branchId);;	
@@ -264,7 +265,16 @@ public class AdminServlet extends HttpServlet {
 			message = "<div class=\"alert alert-danger alert-dismissable custom-alert\" role=\"alert\">Currently You cannot override the book the book!! Sorry for inconvinience</div>";
 			redirectUrl = "/OverrideDuedate.jsp";
 				}
-		
+			}
+			else {
+				request.setAttribute("bookId", bookId);
+				request.setAttribute("branchId", bookId);
+				request.setAttribute("CardNo", bookId);
+				request.setAttribute("dateOut", bookId);
+				request.setAttribute("bookId", bookId);
+				message = "<div class=\"alert alert-danger alert-dismissable custom-alert\" role=\"alert\"><strong>Warning!!!</strong>You cannot select the date not earlier than today!!</div>";
+				redirectUrl = "/overidedate.jsp";
+				}
 		request.setAttribute("statusMessage", message);
 		return redirectUrl;
 	}
@@ -769,7 +779,13 @@ public class AdminServlet extends HttpServlet {
 		if (request.getParameter("authorName") != null && !request.getParameter("authorName").isEmpty()) {
 			if(request.getParameter("authorName").length() > 45){
 				message = "<div class=\"alert alert-danger alert-dismissable custom-alert\" role=\"alert\"><strong>Warning!</strong>Author Name cannot be more than 45 chars</div>";
+				if(editMode) {
+					request.setAttribute("authorId", Integer.parseInt(request.getParameter("authorId")));
+					redirectUrl = "/editauthor.jsp";
+				}
+				else {
 				redirectUrl = "/addauthor.jsp";
+				}
 			}else{
 				author.setAuthorName(request.getParameter("authorName"));
 				String[] bookIds = request.getParameterValues("bookIds");
@@ -791,7 +807,12 @@ public class AdminServlet extends HttpServlet {
 			}
 		}else{
 			message = "<div class=\"alert alert-danger alert-dismissable custom-alert\" role=\"alert\">Author Name cannot be empty.</div>";
+			if(editMode) {
+				redirectUrl = "/editauthor.jsp";
+			}
+			else {
 			redirectUrl = "/addauthor.jsp";
+			}
 		}
 		request.setAttribute("statusMessage", message);
 		return redirectUrl;

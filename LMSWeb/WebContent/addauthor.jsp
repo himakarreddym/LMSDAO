@@ -19,7 +19,7 @@ List<Book> books = service.readBooks();
 		<label for="sel1">Select Books from list Below: </label>
 		<div class="form-group" style="width:90%;display:inline-block;padding-left: 20%">
 			 <select
-				class="form-control" id="sel1" multiple="multiple" size="10" style="width:70%;"
+				class="form-group" id="sel1" multiple="multiple" size="10" style="width:70%;"
 				name="bookIds">
 				<%
 					for (Book b : books) {

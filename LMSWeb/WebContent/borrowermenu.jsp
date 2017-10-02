@@ -19,7 +19,7 @@ SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM YYY, HH:mm");
 		<form method="post" action="checkcard">
 		<input type="hidden" value="<%=Integer.parseInt(request.getAttribute("cardNo").toString())%>" name="cardNo">
 		<h3> <label for="sel1" > Select Branches from list Below  </label> </h3>
-		<select class="form-control" id="sel1" name="branchId" onchange="javascript:this.form.submit()">
+		<select class="form-group" id="sel1" name="branchId" onchange="javascript:this.form.submit()">
 			<%for(LibraryBranch branch: branches) {%>
 			<option value=<%=branch.getBranchId()%>
 			 <% if(Integer.parseInt(request.getAttribute("branchId").toString()) == branch.getBranchId()) out.print("selected");%> 

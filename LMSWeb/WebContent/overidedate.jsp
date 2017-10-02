@@ -9,17 +9,16 @@ int bookid = Integer.parseInt(request.getParameter("bookId"));
 int branchId = Integer.parseInt(request.getParameter("branchId"));
 int cardNo =Integer.parseInt(request.getParameter("CardNo"));
 Timestamp dateOut = Timestamp.valueOf(request.getParameter("dateOut"));
-Timestamp dueDate = Timestamp.valueOf(request.getParameter("dueDate"));
 
 %>
-<div class="container" style="text-align: center;margin-top: 16%">
+<div class="container" style="text-align: center;margin-top: 10%">
 	<h2>Override new due date</h2>
 	<form method="post" action="editdueDate">
 		${statusMessage}
-		<br/>Enter New due date: <input type="date" name="newdueDate" value="<%=dueDate%>"><br />
-		<input type="hidden" name="bookId" value="<%=bookid%>"><br/>
-		<input type="hidden" name="branchId" value="<%=branchId%>"><br/>
-		<input type="hidden" name="CardNo" value="<%=cardNo%>"><br/>
+		<br/>Select New due date: <input type="date" name="newdueDate"><br />
+		<input type="hidden" name="bookId" value="<%=bookid%>">
+		<input type="hidden" name="branchId" value="<%=branchId%>">
+		<input type="hidden" name="CardNo" value="<%=cardNo%>">
 		<input type="hidden" name="dateOut" value="<%=dateOut%>"><br/>
 		
 		<br/>

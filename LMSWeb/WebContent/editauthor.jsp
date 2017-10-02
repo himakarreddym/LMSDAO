@@ -18,7 +18,7 @@ List<Book> authorBooks = author.getBooks();
 		
 		<label for="sel1">Select Books from list Below: </label>
         	<div class="form-group" style="width:90%;display:inline-block;padding-left: 20%">
-		<select class="form-control" id="sel1" multiple="multiple" size="10" name="bookIds" style="width:70%;">
+		<select class="form-group" id="sel1" multiple="multiple" size="10" name="bookIds" style="width:70%;">
 			<%for(Book b: books) {
 			if(! authorBooks.contains(b)) {
 			%>

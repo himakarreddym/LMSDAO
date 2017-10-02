@@ -60,11 +60,11 @@ ${statusMessage}
 			<td><%=a.getPublisherAddress()%></td>
 			<td><%=a.getPublisherPhone()%></td>
 			<td>
-				<%
-					for (Book b : a.getBooks()) {
-							out.println(b.getTitle() + "|");
-						}
-				%>
+              <ul style="padding: 0;list-style-type: none;">
+				<% for (Book b : a.getBooks()) { %>
+					<li> <%out.println(b.getTitle()); %></li>
+						<% 	} %> 
+                </ul> 
 			</td>
 			<td><button type="button"
 					onclick="javascript:location.href='editpublisher.jsp?publisherId=<%=a.getPublisherId()%>'"

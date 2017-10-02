@@ -13,7 +13,7 @@ List<LibraryBranch> branches = libService.readLibraryBranch(null);
 	${statusMessage}
 		<br /> <br /> <br /> <br /> <br />
 		<h2> <label for="sel1" > Select Branches from list Below:  </label> </h2>
-		<select class="form-control" id="sel1" name="branchId" onchange="javascript:location.href='librarian.jsp?branchId='+this.value">
+		<select class="form-group" id="sel1" name="branchId" onchange="javascript:location.href='librarian.jsp?branchId='+this.value">
 			<%for(LibraryBranch branch: branches) {%>
 			<option value=<%=branch.getBranchId()%>
 			<% if(Integer.parseInt(request.getParameter("branchId")) == branch.getBranchId()) out.print("selected");%>
@@ -46,7 +46,7 @@ List<LibraryBranch> branches = libService.readLibraryBranch(null);
 		 <%for(BookCopies bc : bookcopies ){ %>
 		 <tr>
     			<td>
-    			<a href="bookinf.jsp?bookId=<%=bc.getBookId()%>"><% 	out.println(bc.getBook().getTitle()); %>	 <br /></a>
+    			<a href="bookinf.jsp?bookId=<%=bc.getBookId()%>&branchId=<%=branchId%>"><% 	out.println(bc.getBook().getTitle()); %>	 <br /></a>
     			 </td>
     			 <td>
     			<% 	out.println(bc.getCopies()); %>	 <br />

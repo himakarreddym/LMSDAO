@@ -27,7 +27,7 @@ List<Genre> bookGenres = book.getGenres();
 		
         	<div class="form-group" align="center" style="width:50%;display:inline-block;float:left;" >
 		<label for="sel1">Select new Books from list Below: </label>
-		<select class="form-control" id="sel1" multiple="multiple" size="10" name="authorIds" style="width:80%;">
+		<select class="form-group" id="sel1" multiple="multiple" size="10" name="authorIds" style="width:80%;">
 			<%for(Author a: authors) {
 			if(! authorBooks.contains(a)) {
 			%>
@@ -62,7 +62,7 @@ List<Genre> bookGenres = book.getGenres();
          <div style="width:100%;float:left;margin-top:40px;">
           <div class="form-group" align="center" style="width:50%;display:inline-block;float:left;">
 		<label for="sel1">Select new Genres from list Below: </label>
-		<select class="form-control" id="sel1" multiple="multiple" size="10" name="genreIds" style="width:80%;">
+		<select class="form-group" id="sel1" multiple="multiple" size="10" name="genreIds" style="width:80%;">
 			<%for(Genre g: genres) {
 			if(! bookGenres.contains(g)) {
 			%>
@@ -97,7 +97,7 @@ List<Genre> bookGenres = book.getGenres();
          <div style="width:100%;float:left;margin-top:40px;">
        <div class="form-group" align="center" style="width:50%;display:inline-block;float:left;">
 		<label for="sel1">Select new Publisher from list Below: </label>
-		<select class="form-control" id="sel1" name="publisherId" style="width:80%">
+		<select class="form-group" id="sel1" name="publisherId" style="width:80%">
 			<%for(Publisher p: publishers) {
 			
 			%>

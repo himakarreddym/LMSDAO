@@ -22,7 +22,7 @@ List<Genre> genres =service.readGenres();
 		<%-- Div class for select tag --%> 
 		<div class="form-group" align="center" style="width:30%;float:left;padding-right:30px;">
 		<label for="sel1">Select Publisher from list Below: </label>
-		<select class="form-control" id="sel1" name="publisherId">
+		<select class="form-group" id="sel1" name="publisherId">
 			<%for(Publisher p: publishers) {%>
 			<option value=<%=p.getPublisherId()%>><%=p.getPublisherName() %></option>
 			<%} %>
@@ -32,7 +32,7 @@ List<Genre> genres =service.readGenres();
 		
 		<div class="form-group" align="center" style="width:35%;float:left;padding-right:30px;" >
 		<label for="sel1">Select Authors from list Below: </label>
-		<select class="form-control" id="sel1" multiple="multiple" size="10" name="authorIds">
+		<select class="form-group" id="sel1" multiple="multiple" size="10" name="authorIds">
 			<%for(Author a: authors) {%>
 			<option value=<%=a.getAuthorId()%>><%=a.getAuthorName() %></option>
 			<%} %>
@@ -40,7 +40,7 @@ List<Genre> genres =service.readGenres();
 		 </div>
 		 	<div class="form-group" align="center" style="width:35%;float:left;padding-right:10px;" >
 		<label for="sel1">Select Genre from list Below: </label>
-		<select class="form-control" id="sel1" multiple="multiple" size="10" name="genreIds">
+		<select class="form-group" id="sel1" multiple="multiple" size="10" name="genreIds">
 			<%for(Genre g: genres) {%>
 			<option value=<%=g.getGenreId()%>><%=g.getGenreName() %></option>
 			<%} %>

@@ -22,10 +22,10 @@ List<Integer> bookIds = new ArrayList<Integer>();
 		 <%-- Div class for select tag --%> 
 		<button type="button"
 					onclick="javascript:location.href='viewbranches.jsp'"
-					class="btn btn-danger btn-md">View Branches </button> <br> <br>
+					class="btn btn-danger btn-md">View Branches </button> <br> <br><br>
 		<label for="sel1">Enter number of copies for the books from list Below: </label>
-		<div class="form-group" style="padding-top: 20px;padding-left: 18%;">
-		 <table class="table table-striped" style="width:80%;">
+		<div class="form-group" style="padding-top: 20px;padding-left: 10%;">
+		 <table class="table table-striped" style="width:90%;">
 		<tr>
 			<th>Book Title</th>
 			<th>Number of copies</th>

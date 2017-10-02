@@ -15,13 +15,15 @@
 <%@page import="com.gcit.lms.entity.LibraryBranch"%>
 <%AdminService adminServive = new AdminService();
 int bookId = Integer.parseInt(request.getParameter("bookId"));
+int branchId = Integer.parseInt(request.getParameter("branchId"));
 Book book = adminServive.readBookByPK(bookId);
 %>
-<div class="container">
+<div class="container" style="text-align: center;margin-top: 6%">
 		${statusMessage}
-		<div class="form-group">
-		<br><br><br> <label for="sel1">Book Information : </label> <br><br><br>
-        <table class="table table-striped" >
+			<h3>Book Information  </h3> <br>
+		<div class="form-group" style="padding-left: 20%;">
+	
+        <table class="table table-striped" style="width: 80%;">
     		<tr>
     			<th> Book Title </th>
     			<td>
@@ -57,8 +59,11 @@ Book book = adminServive.readBookByPK(bookId);
 				%> 
 			</td>
     		</tr>		
-  
-			
-         </table> 
+    </table> 
+         
     </div>
+    <button type="button"
+					onclick="javascript:location.href='librarian.jsp?bookId=<%=bookId%>&branchId=<%=branchId%>'"
+					class="btn btn-primary btn-md"> Return to previous </button>
+    
 </div>
