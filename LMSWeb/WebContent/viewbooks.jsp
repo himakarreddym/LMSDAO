@@ -1,3 +1,5 @@
+<%@page import="com.gcit.lms.entity.Genre"%>
+<%@page import="com.gcit.lms.entity.Publisher"%>
 <%@include file="boot.htm" %>
 <%@page import="com.gcit.lms.entity.Book"%>
 <%@page import="com.gcit.lms.service.AdminService"%>
@@ -6,7 +8,6 @@
 <%@page import="com.gcit.lms.entity.Author"%>
 <%
 	AdminService service = new AdminService();
-	
 	Integer totalCount = service.getBooksCount();
 	int numOfPages = 0;
 	if(totalCount%10 > 0){
@@ -47,6 +48,8 @@
 		<tr>
 			<th>#</th>
 			<th>Book Title</th>
+			<th>Publisher Name :</th>
+			<th>Book Genres </th>
 			<th>Author Names</th>
 			<th>Edit Book</th>
 			<th>Delete Book</th>
@@ -57,6 +60,21 @@
 		<tr>
 			<td><%=books.indexOf(b) + 1%></td>
 			<td><%=b.getTitle()%></td>
+				<td>
+				 <%
+				 			if(b.getPublisher() != null)
+							out.println(b.getPublisher().getPublisherName() );
+				%> 
+			</td>
+			
+			<td>
+				 <%
+					for (Genre g : b.getGenres()) {
+							out.println(g.getGenreName() + "|");
+						}
+				%> 
+			</td>
+			
 			<td>
 				 <%
 					for (Author a : b.getAuthors()) {

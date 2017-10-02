@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import com.gcit.lms.entity.BookLoans;
+import com.gcit.lms.entity.Author;
 import com.gcit.lms.entity.Book;
 import com.gcit.lms.entity.LibraryBranch;
 import com.gcit.lms.entity.Borrower;
@@ -22,7 +23,9 @@ public class BookLoansDAO extends BaseDAO {
 		save("INSERT INTO tbl_book_loans (bookId,branchId,cardNo,dateOut,dueDate,dateIn) VALUES (?,?,?,?,?,?)", 
 			new Object[] { bookloans.getBookId(),bookloans.getBranchId(),bookloans.getCardNo(),bookloans.getDateOut(),bookloans.getDueDate(),bookloans.getDateIn() });
 	}
-	
+	public List<BookLoans> readAllbookLoans() throws SQLException {
+		return readAll("SELECT * FROM tbl_book_loans", null);
+	}
 //	public void saveBookBookLoans(BookLoans bookloans) throws SQLException {
 //		for(Book b: bookloans.getBooks()){
 //			save("INSERT INTO tbl_book VALUES (?, ?,?)", new Object[] { b.getBookId(), b.getTitle(),bookloans.getCardNo()});
@@ -37,12 +40,21 @@ public class BookLoansDAO extends BaseDAO {
 		save("UPDATE tbl_book_loans SET dueDate=?,dateIn = ? WHERE bookId = ? AND branchId = ? AND cardNo= ? And dateOut =? ",
 			new Object[] { bookloans.getDueDate(),bookloans.getDateIn() ,bookloans.getBookId(),bookloans.getBranchId(),bookloans.getCardNo(),bookloans.getDateOut() });
 	}
+	public void updatedueDate(BookLoans bookloans) throws SQLException {
+		save("UPDATE tbl_book_loans SET dueDate=? WHERE bookId = ? AND branchId = ? AND cardNo= ? And dateOut =? ",
+			new Object[] { bookloans.getDueDate(),bookloans.getBookId(),bookloans.getBranchId(),bookloans.getCardNo(),bookloans.getDateOut() });
+	}
 
 	public void deleteBookLoans(BookLoans bookloans) throws SQLException {
 		save("DELETE FROM tbl_book_loans WHERE bookId = ? AND branchId = ? AND cardNo= ? And dateOut =?", 
 				new Object[] { bookloans.getBookId(),bookloans.getBranchId(),bookloans.getCardNo(),bookloans.getDateOut() });
 	}
 	
+	public List<BookLoans> readBookLoansPage(Integer pageNo) throws SQLException {
+		setPageNo(pageNo);
+			return readAll("SELECT * FROM tbl_book_loans WHERE dateIn is null", null);
+		
+	}
 	
 
 	public List<BookLoans> readBookLoans(BookLoans bookloans) throws SQLException {
@@ -55,6 +67,13 @@ public class BookLoansDAO extends BaseDAO {
 		
 	}
 
+	public List<BookLoans> readBookLoans1() throws SQLException {
+		return readAll("SELECT * FROM tbl_book_loans WHERE dateIn is null", null);
+	
+}
+	public Integer getbookLoansCount() throws SQLException {
+		return getCount("SELECT count(*) as COUNT FROM tbl_book_loans WHERE dateIn is null", null);
+	}
 	public List<BookLoans> readBookLoansBycard (BookLoans bookloans) throws SQLException {
 			return readAll("SELECT * FROM tbl_book_loans WHERE branchId = ? AND cardNo= ? AND dateIn is null", 
 					new Object[]{bookloans.getBranchId(),bookloans.getCardNo()});

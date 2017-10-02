@@ -2,7 +2,6 @@
 <%@page import="com.gcit.lms.entity.Borrower"%>
 <%@page import="com.gcit.lms.service.BorrowerService"%>
 <%@page import="com.gcit.lms.entity.BookCopies"%>
-<%@include file="boot.htm" %>
 <%@page import="com.gcit.lms.service.LibrarianService"%>
 <%@include file="boot.htm" %>
 <%@page import="java.util.List"%>

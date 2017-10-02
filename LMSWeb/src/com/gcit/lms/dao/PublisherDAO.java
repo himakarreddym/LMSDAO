@@ -6,9 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import com.gcit.lms.entity.Publisher;
-import com.gcit.lms.entity.Author;
 import com.gcit.lms.entity.Book;
-import com.gcit.lms.entity.Genre;
 
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class PublisherDAO extends BaseDAO {

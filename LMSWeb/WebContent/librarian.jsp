@@ -1,7 +1,6 @@
 <%@page import="com.gcit.lms.entity.BookCopies"%>
 <%@include file="boot.htm" %>
 <%@page import="com.gcit.lms.service.LibrarianService"%>
-<%@include file="boot.htm" %>
 <%@page import="java.util.List"%>
 <%@page import="com.gcit.lms.entity.LibraryBranch"%>
 <%LibrarianService libService = new LibrarianService();
@@ -47,7 +46,7 @@ List<LibraryBranch> branches = libService.readLibraryBranch(null);
 		 <%for(BookCopies bc : bookcopies ){ %>
 		 <tr>
     			<td>
-    			<% 	out.println(bc.getBook().getTitle()); %>	 <br />
+    			<a href="bookinf.jsp?bookId=<%=bc.getBookId()%>"><% 	out.println(bc.getBook().getTitle()); %>	 <br /></a>
     			 </td>
     			 <td>
     			<% 	out.println(bc.getCopies()); %>	 <br />
@@ -55,7 +54,7 @@ List<LibraryBranch> branches = libService.readLibraryBranch(null);
     			 
     			 <td><button type="button"
 					onclick="javascript:location.href='editbookcopies.jsp?bookId=<%=bc.getBookId()%>&branchId=<%=branchId%>'"
-					class="btn btn-primary btn-sm">Edit</button></td>
+					class="btn btn-primary btn-sm"> Update copies </button></td>
 
     		</tr>
 				

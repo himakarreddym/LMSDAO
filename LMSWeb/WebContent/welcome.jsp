@@ -1,4 +1,7 @@
 <%@include file="boot.htm" %>
+<div class="alert alert-success alert-dismissable custom-alert" role="alert">
+  <strong>Warning!</strong> This alert will animate itself to close in 3 secs.
+</div>
 <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="jumbotron">
       <div class="container">

@@ -6,13 +6,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.gcit.lms.dao.AuthorDAO;
+import com.gcit.lms.dao.BookCopiesDAO;
 import com.gcit.lms.dao.BookDAO;
+import com.gcit.lms.dao.BookLoansDAO;
 import com.gcit.lms.dao.PublisherDAO;
 import com.gcit.lms.dao.BorrowerDAO;
 import com.gcit.lms.dao.GenreDAO;
 import com.gcit.lms.dao.LibraryBranchDAO;
 import com.gcit.lms.entity.Author;
 import com.gcit.lms.entity.Book;
+import com.gcit.lms.entity.BookCopies;
+import com.gcit.lms.entity.BookLoans;
 import com.gcit.lms.entity.Publisher;
 import com.gcit.lms.entity.Borrower;
 import com.gcit.lms.entity.Genre;
@@ -63,9 +67,12 @@ import com.gcit.lms.entity.LibraryBranch;
 					adao.updateBook(book);
 					if(book.getAuthors() != null && book.getAuthors().size() > 0)
 					adao.saveBookAuthor(book);
+					if(book.getGenres() != null && book.getGenres().size() > 0)
+					adao.saveBookGenre(book);
 				}else{
 					book.setBookId(adao.saveBookID(book));
 					adao.saveBookAuthor(book);
+					adao.saveBookGenre(book);
 				}
 				conn.commit();
 			} catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException e) {
@@ -78,18 +85,13 @@ import com.gcit.lms.entity.LibraryBranch;
 			}
 		}
 		
-		public void saveBookwithPub(Book book) throws SQLException{
+		public void upadatebookPublisher(Book book) throws SQLException{
 			Connection conn = null;
 			try {
 				conn = util.getConnection();
 				BookDAO adao = new BookDAO(conn);
 				if(book.getBookId()!=null){
-					adao.updateBook(book);
-					if(book.getAuthors() != null && book.getAuthors().size() > 0)
-					adao.saveBookAuthor(book);
-				}else{
-					book.setBookId(adao.saveBookID(book));
-					adao.saveBookAuthor(book);
+					adao.updatebookPub(book);
 				}
 				conn.commit();
 			} catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException e) {
@@ -101,6 +103,7 @@ import com.gcit.lms.entity.LibraryBranch;
 				}
 			}
 		}
+
 		
 		public List<Book> getBooks(String[] bookIds) throws SQLException
 		{
@@ -178,6 +181,22 @@ import com.gcit.lms.entity.LibraryBranch;
 
 			return null;
 		}
+		public List<BookLoans> readallBookLoans() throws SQLException{
+			Connection conn = null;
+			try {
+				conn = util.getConnection();
+				BookLoansDAO bldao = new BookLoansDAO(conn);
+				return bldao.readAllbookLoans();
+			} catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException e) {
+				e.printStackTrace();
+			} finally{
+				if(conn!=null){
+					conn.close();
+				}
+			}
+
+			return null;
+		}
 		
 		public List<Publisher> readPublishers() throws SQLException{
 			Connection conn = null;
@@ -195,7 +214,43 @@ import com.gcit.lms.entity.LibraryBranch;
 
 			return null;
 		}
-		
+		public List<Genre> getGenres(String[] genreIds) throws SQLException
+		{
+					Connection conn = null;
+			try {
+				conn = util.getConnection();
+				GenreDAO gdao = new GenreDAO(conn);
+				List<Genre> genres = new ArrayList<>();
+				for(String genreId: genreIds)
+				{
+					genres.add(gdao.readGenreByPK(Integer.parseInt(genreId)));
+				}
+				return genres;
+			} catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException e) {
+				e.printStackTrace();
+			} finally{
+				if(conn!=null){
+					conn.close();
+				}
+			}
+			return null;
+		}
+		public List<Genre> readGenres() throws SQLException{
+			Connection conn = null;
+			try {
+				conn = util.getConnection();
+				GenreDAO pdao = new GenreDAO(conn);
+				return pdao.readGenres(null);
+			} catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException e) {
+				e.printStackTrace();
+			} finally{
+				if(conn!=null){
+					conn.close();
+				}
+			}
+
+			return null;
+		}
 		
 		
 		public void deleteAuthor(Author author) throws SQLException{
@@ -232,6 +287,40 @@ import com.gcit.lms.entity.LibraryBranch;
 			}
 		}
 		
+		public List<BookLoans> readBookLoans1() throws SQLException{
+			Connection conn = null;
+			try {
+				conn = util.getConnection();
+				BookLoansDAO bcdao = new BookLoansDAO(conn);
+				return bcdao.readBookLoans1();
+			} catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException e) {
+				e.printStackTrace();
+			} finally{
+				if(conn!=null){
+					conn.close();
+				}
+			}
+
+			return null;
+		}
+		
+		public void updatedueDate(BookLoans bookloans) throws SQLException{
+			Connection conn = null;
+			try {
+				conn = util.getConnection();
+				BookLoansDAO bcdao = new BookLoansDAO(conn);
+					bcdao.updatedueDate(bookloans);
+				conn.commit();
+			} catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException e) {
+				e.printStackTrace();
+				conn.rollback();
+			} finally{
+				if(conn!=null){
+					conn.close();
+				}
+			}
+		}
+		
 		public void deleteBookAuthor(Author author,int bookId) throws SQLException{
 			Connection conn = null;
 			try {
@@ -255,6 +344,22 @@ import com.gcit.lms.entity.LibraryBranch;
 				conn = util.getConnection();
 				AuthorDAO adao = new AuthorDAO(conn);
 				return adao.readAuthors(searchString, pageNo);
+			} catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException e) {
+				e.printStackTrace();
+			} finally{
+				if(conn!=null){
+					conn.close();
+				}
+			}
+			
+			return null;
+		}
+		public List<BookLoans> readBookLoansPage(Integer pageNo) throws SQLException{
+			Connection conn = null;
+			try {
+				conn = util.getConnection();
+				BookLoansDAO bldao = new BookLoansDAO(conn);
+				return bldao.readBookLoansPage(pageNo);
 			} catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException e) {
 				e.printStackTrace();
 			} finally{
@@ -340,6 +445,23 @@ import com.gcit.lms.entity.LibraryBranch;
 				conn = util.getConnection();
 				AuthorDAO adao = new AuthorDAO(conn);
 				return adao.getAuthorsCount();
+			} catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException e) {
+				e.printStackTrace();
+			} finally{
+				if(conn!=null){
+					conn.close();
+				}
+			}
+			
+			return null;
+		}
+		
+		public Integer getbookLoansCount() throws SQLException{
+			Connection conn = null;
+			try {
+				conn = util.getConnection();
+				BookLoansDAO bldao = new BookLoansDAO(conn);
+				return bldao.getbookLoansCount();
 			} catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException e) {
 				e.printStackTrace();
 			} finally{
@@ -464,16 +586,34 @@ import com.gcit.lms.entity.LibraryBranch;
 	 * Library_Branches 
 	 * 
 	 */
-	public void saveLibraryBranch(LibraryBranch borrower) throws SQLException{
+	public int saveLibraryBranch(LibraryBranch branch) throws SQLException{
 		Connection conn = null;
+		int branchId = -1;
 		try {
 			conn = util.getConnection();
 			LibraryBranchDAO lbdao = new LibraryBranchDAO(conn);
-			if(borrower.getBranchId()!=null){
-				lbdao.updateLibraryBranches(borrower);
+			if(branch.getBranchId()!=null){
+				lbdao.updateLibraryBranches(branch);
 			}else{
-				lbdao.saveLibraryBranches(borrower);
+				branchId =lbdao.saveLibraryBranchesWithID(branch);
 			}
+			conn.commit();
+		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+			conn.rollback();
+		} finally{
+			if(conn!=null){
+				conn.close();
+			}
+		}
+		return branchId;
+	}
+	public void savebookCopies(BookCopies bookCopies) throws SQLException{
+		Connection conn = null;
+		try {
+			conn = util.getConnection();
+			BookCopiesDAO bcdao = new BookCopiesDAO(conn);
+			bcdao.saveBookCopies(bookCopies);
 			conn.commit();
 		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException e) {
 			e.printStackTrace();

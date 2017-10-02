@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import com.gcit.lms.entity.Genre;
-import com.gcit.lms.entity.Author;
 import com.gcit.lms.entity.Book;
 
 @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -37,6 +36,15 @@ public class GenreDAO extends BaseDAO {
 	}
 	public Integer getGenresCount() throws SQLException {
 		return getCount("SELECT count(*) as COUNT FROM tbl_genre", null);
+	}
+	public List<Genre> readGenres(String genrename) throws SQLException {
+		if(genrename !=null && !genrename.isEmpty()){
+			genrename = "%"+genrename+"%";
+			return readAll("SELECT * FROM tbl_genre WHERE genre_name like ?", new Object[]{genrename});
+		}else{
+			return readAll("SELECT * FROM tbl_genre", null);
+		}
+		
 	}
 	public Genre readGenreByPK(Integer genreId) throws SQLException {
 		List<Genre> genres = readAll("SELECT * FROM tbl_genre WHERE genre_id = ?", new Object[]{genreId});

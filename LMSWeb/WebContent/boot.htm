@@ -6,7 +6,16 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" href="https://getbootstrap.com/favicon.ico">
-
+	  <script>
+window.setTimeout(function() {
+    //$(".custom-alert").alert('close'); <--- Do not use this
+  
+    $(".custom-alert").slideUp(500, function() {
+        $(this).remove();
+    });
+}, 3000); 
+      
+  </script>
 
     <title>GCIT Library Management</title>
 
@@ -29,7 +38,7 @@
           <li class="nav-item active">
           </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="admin.jsp" id="dropdown03" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Administrator</a>
+            <a class="nav-link dropdown-toggle" href="admin.jsp" id="dropdown03" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Administrator</a>
             <div class="dropdown-menu" aria-labelledby="dropdown03">
              <a class="dropdown-item" href="author.jsp">Author Services</a>
              <a class="dropdown-item" href="book.jsp">Book Services</a>
@@ -37,7 +46,7 @@
             	   <a class="dropdown-item" href="publisher.jsp">Publisher Services</a>
                 <a class="dropdown-item" href="borrower1.jsp">Borrower Services</a>
                  <a class="dropdown-item" href=" Librarybranch.jsp">Library Branch Services</a>
-              <a class="dropdown-item" href="#">Book Services</a>
+                 <a class="dropdown-item" href=" OverrideDuedate.jsp">Override the Due date</a>
              
             </div>
           </li>
@@ -60,6 +69,6 @@
     <script src="./boot_files/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="./boot_files/ie10-viewport-bug-workaround.js"></script>
-  
+  <script src="./boot_files/jquery.min.js"></script>
 
 </body></html>

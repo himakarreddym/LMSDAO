@@ -1,3 +1,4 @@
+<%@page import="com.gcit.lms.entity.Genre"%>
 <%@page import="com.gcit.lms.entity.Publisher"%>
 <%@page import="com.gcit.lms.entity.Author"%>
 <%@include file="boot.htm" %>
@@ -8,6 +9,7 @@
 <%AdminService service = new AdminService();
 List<Author> authors = service.readAuthors();
 List<Publisher> publishers =service.readPublishers();
+List<Genre> genres =service.readGenres();
 
 %>
 <div class="container">
@@ -18,7 +20,7 @@ List<Publisher> publishers =service.readPublishers();
 		 <br/>
 		
 		<%-- Div class for select tag --%> 
-		<div class="form-group" align="center" style="width:25%;float:left;padding-right:30px;">
+		<div class="form-group" align="center" style="width:30%;float:left;padding-right:30px;">
 		<label for="sel1">Select Publisher from list Below: </label>
 		<select class="form-control" id="sel1" name="publisherId">
 			<%for(Publisher p: publishers) {%>
@@ -28,15 +30,22 @@ List<Publisher> publishers =service.readPublishers();
 		 </div>
 		
 		
-		<div class="form-group" align="center" style="width:25%;float:left;padding-right:10px;" >
-		<label for="sel1">Select Books from list Below: </label>
+		<div class="form-group" align="center" style="width:35%;float:left;padding-right:30px;" >
+		<label for="sel1">Select Authors from list Below: </label>
 		<select class="form-control" id="sel1" multiple="multiple" size="10" name="authorIds">
 			<%for(Author a: authors) {%>
 			<option value=<%=a.getAuthorId()%>><%=a.getAuthorName() %></option>
 			<%} %>
 		</select>
 		 </div>
-		 
+		 	<div class="form-group" align="center" style="width:35%;float:left;padding-right:10px;" >
+		<label for="sel1">Select Genre from list Below: </label>
+		<select class="form-control" id="sel1" multiple="multiple" size="10" name="genreIds">
+			<%for(Genre g: genres) {%>
+			<option value=<%=g.getGenreId()%>><%=g.getGenreName() %></option>
+			<%} %>
+		</select>
+		 </div>
 		<button type="submit" class="btn btn-primary btn-md">Save Author</button>
 	</form>
 </div>

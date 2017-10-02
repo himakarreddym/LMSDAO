@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.gcit.lms.entity.Author;
 import com.gcit.lms.entity.Book;
+import com.gcit.lms.entity.Genre;
 import com.gcit.lms.entity.Publisher;
 
 @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -18,9 +19,6 @@ public class BookDAO extends BaseDAO {
 	}
 
 	public void saveBook(Book book) throws SQLException {
-		save("INSERT INTO tbl_book (title) VALUES (?)", new Object[] { book.getTitle() });
-	}
-	public void saveBookwithPub(Book book) throws SQLException {
 		save("INSERT INTO tbl_book (title,pubId) VALUES (?,?)", new Object[] { book.getTitle(),book.getPublisher().getPublisherId() });
 	}
 	
@@ -29,13 +27,21 @@ public class BookDAO extends BaseDAO {
 			save("INSERT INTO tbl_book_authors VALUES (?, ?)", new Object[] { book.getBookId(), a.getAuthorId()});
 		}
 	}
+	public void saveBookGenre(Book book) throws SQLException {
+		for(Genre g: book.getGenres()){
+			save("INSERT INTO tbl_book_genres VALUES (?, ?)", new Object[] {g.getGenreId() , book.getBookId()});
+		}
+	}
 	
 	public Integer saveBookID(Book book) throws SQLException {
-		return saveWithID("INSERT INTO tbl_book (title) VALUES (?)", new Object[] { book.getTitle() });
+		return saveWithID("INSERT INTO tbl_book (title,pubId) VALUES (?,?)", new Object[] { book.getTitle(),book.getPublisher().getPublisherId() });
 	}
 
 	public void updateBook(Book book) throws SQLException {
-		save("UPDATE tbl_book SET title = ? WHERE bookId = ?", new Object[] { book.getTitle(), book.getBookId() });
+		save("UPDATE tbl_book SET title = ? , pubId = ? WHERE bookId = ?", new Object[] { book.getTitle(),book.getPublisher().getPublisherId() ,book.getBookId() });
+	}
+	public void updatebookPub(Book book) throws SQLException {
+		save("UPDATE tbl_book SET pubId = ? WHERE bookId = ?", new Object[] { book.getPublisher().getPublisherId() ,book.getBookId() });
 	}
 
 	public void deleteBook(Book book) throws SQLException {

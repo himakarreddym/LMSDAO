@@ -28,9 +28,9 @@
 		out.println(request.getAttribute("statusMessage"));
 	}
 %>
-<div class="container">
-	<h1>List of LibraryBranchs in LMS&nbsp;&nbsp;&nbsp;&nbsp; Total LibraryBranchs in LMS: <%=totalCount%> LibraryBranchs</h1>
-	<nav aria-label="Page navigation example">
+<div class="container" >
+	<h3>List of LibraryBranchs in LMS&nbsp;&nbsp;&nbsp;&nbsp; Total LibraryBranchs in LMS: <%=totalCount%> LibraryBranchs</h3>
+	<nav aria-label="Page navigation example" style="text-align: center">
 		<ul class="pagination">
 			<li class="page-item"><a class="page-link" href="#"
 				aria-label="Previous"> <span aria-hidden="true">&laquo;</span> <span
@@ -61,7 +61,7 @@
 			<td><%=a.getBranchName()%></td>
 			<td><%=a.getBranchAddress()%></td>
 			<td><button type="button"
-					onclick="javascript:location.href='editbranch.jsp?branchId=<%=a.getBranchId()%>'"
+					onclick="javascript:location.href='librarian.jsp?branchId=<%=a.getBranchId()%>'"
 					class="btn btn-primary btn-sm">Edit</button></td>
 			<td><button type="button"
 					onclick="javascript:location.href='deleteLibraryBranch?branchId=<%=a.getBranchId()%>'"

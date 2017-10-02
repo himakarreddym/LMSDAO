@@ -2,6 +2,10 @@ package com.gcit.lms.web;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -12,6 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.gcit.lms.entity.Author;
 import com.gcit.lms.entity.Book;
+import com.gcit.lms.entity.BookCopies;
+import com.gcit.lms.entity.BookLoans;
 import com.gcit.lms.entity.Borrower;
 import com.gcit.lms.entity.Genre;
 import com.gcit.lms.entity.LibraryBranch;
@@ -26,7 +32,8 @@ import com.gcit.lms.service.AdminService;
 	"/addPublisher","/deletePublisher","/pagePublishers","/editPublisher",
 	"/addBorrower","/editBorrower","/deleteBorrower","/pageBorrowers",
 	"/addbranch","/pageLibraryBranchs","/editLibraryBranch","/deleteLibraryBranch",
-	"/addBook","/pageBooks","/deleteBook","/editBook","/deleteBookAuthor"})
+	"/addBook","/pageBooks","/deleteBook","/editBook","/deleteBookAuthor","/deleteGenreBook1",
+	"/deletebookPublisher","/editdueDate","/pageBookLoans","/addbranchBook","/override"})
 public class AdminServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -93,6 +100,29 @@ public class AdminServlet extends HttpServlet {
 		case "/deleteBookAuthor":
 			redirectUrl=deleteBookAuthor(request,response,"/viewbooks.jsp");
 			break;
+		case "/deleteGenreBook1":
+			redirectUrl=deleteGenreBook1(request, response, "/viewbooks.jsp");
+			break;
+		case "/deletebookPublisher":
+			try {
+				redirectUrl=deletebookPublisher(request, response, "/viewbooks.jsp");
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			break;
+		case "/pageBookLoans":
+			redirectUrl=pageBookLoans(request,response,"/OverrideDuedate.jsp");
+			break;
+		case "/override":
+			try {
+				redirectUrl=overridedate(request,"/overidedate.jsp");
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			break;
+		
 			
 		default:
 			break;
@@ -135,7 +165,7 @@ public class AdminServlet extends HttpServlet {
 			redirectUrl=addBorrower(request, "/viewborrowers.jsp", true);
 			break;
 		case "/addbranch":
-			redirectUrl=addbranch(request, "/viewbranches.jsp", false);
+			redirectUrl=addbranch(request, "/bookbranch.jsp", false);
 			break;
 		case "/editLibraryBranch":
 			redirectUrl=addbranch(request, "/viewbranches.jsp", true);
@@ -146,6 +176,18 @@ public class AdminServlet extends HttpServlet {
 		case "/editBook":
 			redirectUrl = addBook(request, "/viewbooks.jsp", true);
 			break;
+		case "/editdueDate":
+			try {
+				redirectUrl = editdueDate(request,"/OverrideDuedate.jsp");
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			break;
+		case "/addbranchBook":
+			redirectUrl = addbranchBook(request, "/bookbranch.jsp");
+			break;
+		
 		default:
 			break;
 		}
@@ -154,11 +196,95 @@ public class AdminServlet extends HttpServlet {
 		rd.forward(request, response);
 		
 	}
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+	private String addbranchBook(HttpServletRequest request, String redirectUrl) {
+		BookCopies bookCopies = new BookCopies();
+		String message = "No of copies Added sucesfully for the book";
+		
+		if(request.getParameter("noofCopies") != null && request.getParameter("branchId") != null && request.getParameter("bookId") != null) {
+		int noofCopies = Integer.parseInt(request.getParameter("noofCopies"));
+		int branchId = Integer.parseInt(request.getParameter("branchId"));
+		int bookId = Integer.parseInt(request.getParameter("bookId"));
+		try {
+			bookCopies.setBookId(bookId);
+			bookCopies.setBranchId(branchId);
+			bookCopies.setCopies(noofCopies);
+		adminService.savebookCopies(bookCopies);
+		request.setAttribute("branchId", branchId);
+//		request.setAttribute("bookId", bookId);
+		} catch (SQLException e) {
+		e.printStackTrace();
+		}}else{
+		message = "Book Copies cannot be Empty";
+		}
+		request.setAttribute("statusMessage", message);
+		 return redirectUrl;
+		}	
 	
+	private String overridedate(HttpServletRequest request, String redirectUrl) throws ParseException {
+		request.setAttribute("bookId",Integer.parseInt(request.getParameter("bookId")));
+		request.setAttribute("branchId",Integer.parseInt(request.getParameter("branchId")));
+		request.setAttribute("CardNo",Integer.parseInt(request.getParameter("CardNo")));
+		request.setAttribute("dateOut",Timestamp.valueOf(request.getParameter("dateOut")));
+		request.setAttribute("dueDate",Timestamp.valueOf(request.getParameter("dueDate")));
+		return redirectUrl;
+	}
+	
+	
+	
+	
+	
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+	private String editdueDate(HttpServletRequest request, String redirectUrl) throws ParseException {
+		BookLoans bookloans = new BookLoans();
+		String message = "Successfully overrided the Due date ";
+		int bookId = Integer.parseInt(request.getParameter("bookId"));
+		int branchId = Integer.parseInt(request.getParameter("branchId"));
+		int cardNo = Integer.parseInt(request.getParameter("CardNo"));
+		Timestamp dateOut = Timestamp.valueOf(request.getParameter("dateOut"));
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date date1 =sdf.parse(request.getParameter("newdueDate"));
+		Timestamp newdueDate = (Timestamp) new java.sql.Timestamp(date1.getTime());
+		if(bookId !=0 && branchId !=0 && cardNo !=0) {
+			bookloans.setBookId(bookId);	
+			bookloans.setBranchId(branchId);;	
+			bookloans.setCardNo(cardNo);	
+			bookloans.setDateOut(dateOut);
+			bookloans.setDueDate(newdueDate);
+				try {
+					adminService.updatedueDate(bookloans);;
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+		}else{
+			message = "Currently You cannot override the book the book!! Sorry for inconvinience ";
+			redirectUrl = "/OverrideDuedate.jsp";
+		}
+		request.setAttribute("statusMessage", message);
+		return redirectUrl;
+	}
+	
+	
+	private String pageBookLoans(HttpServletRequest request, HttpServletResponse response, String redirectUrl)
+			throws ServletException, IOException {
+		if(request.getParameter("pageNo")!=null){
+			Integer pageNo = Integer.parseInt(request.getParameter("pageNo"));
+			try {
+				request.setAttribute("bookloans", adminService.readBookLoansPage(pageNo));
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			return redirectUrl;
+		}
+		return null;
+	}
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 	private String addBook(HttpServletRequest request, String redirectUrl, Boolean editMode) {
 		Book book = new Book();
+		Publisher pub = new Publisher();
 		String message = "Book added Sucessfully";
 		
 		if (request.getParameter("bookName") != null && !request.getParameter("bookName").isEmpty()) {
@@ -168,15 +294,29 @@ public class AdminServlet extends HttpServlet {
 			}else{
 				book.setTitle(request.getParameter("bookName"));
 				String[] authorIds = request.getParameterValues("authorIds");
+				String[] genreIds = request.getParameterValues("genreIds");
+				//Checking for publisher
+				int pubId = 0;
+				if(request.getParameter("publisherId") != null) {
+					pubId = Integer.parseInt(request.getParameter("publisherId"));
+				}
+					pub.setPublisherId(pubId);
+					book.setPublisher(pub);
+					//AuthorIds
 				try {
-					if(authorIds !=null)
+					if(authorIds !=null) {
 						book.setAuthors(adminService.getAuthors(authorIds));
+					}
+					if(genreIds != null) {
+						book.setGenres(adminService.getGenres(genreIds));
+					}
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				if(editMode){
 					book.setBookId(Integer.parseInt(request.getParameter("bookId")));
+					
 				}
 				try {
 					adminService.saveBook(book);
@@ -249,6 +389,32 @@ public class AdminServlet extends HttpServlet {
 		return null;
 	}
 	
+	private String deletebookPublisher(HttpServletRequest request, HttpServletResponse response, String redirectUrl)
+			throws ServletException, IOException, SQLException {
+		String message = "Publisher deleted Sucessfully for this Book";
+		if(request.getParameter("bookId")!=null){
+			Integer bookId = Integer.parseInt(request.getParameter("bookId"));
+			Book book = new Book();
+			book.setBookId(bookId);
+			Publisher pub = new Publisher();
+			pub.setPublisherId(null);
+			book.setPublisher(pub);
+			try {
+				adminService.upadatebookPublisher(book);
+				request.setAttribute("bookId",bookId);
+				redirectUrl = "/editbooks.jsp";
+				
+			} catch (SQLException e) {
+				e.printStackTrace();
+				message = "Author deleted failed. Contact Admin";
+			}
+			request.setAttribute("statusMessage", message);
+			return redirectUrl;
+		}
+		
+		return null;
+	}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 	private String addbranch(HttpServletRequest request, String redirectUrl, Boolean editMode) {
@@ -267,8 +433,9 @@ public class AdminServlet extends HttpServlet {
 		branch.setBranchId(Integer.parseInt(request.getParameter("branchId")));
 		}
 		try {
-		adminService.saveLibraryBranch(branch);
+		int branchid1 = adminService.saveLibraryBranch(branch);
 		message  = "LibraryBranch Added/Updated Sucessfully";
+		request.setAttribute("branchId", branchid1);
 		} catch (SQLException e) {
 		e.printStackTrace();
 		}
@@ -498,6 +665,29 @@ public class AdminServlet extends HttpServlet {
 					adminService.deleteBookGenre(genre,bookId);
 					request.setAttribute("genreId",genreId);
 					redirectUrl = "/editgenre.jsp";
+					
+				} catch (SQLException e) {
+					e.printStackTrace();
+					message = "Genre deleted failed. Contact Admin";
+				}
+				request.setAttribute("statusMessage", message);
+				return redirectUrl;
+			}
+			
+			return null;
+		}
+		private String deleteGenreBook1(HttpServletRequest request, HttpServletResponse response, String redirectUrl)
+				throws ServletException, IOException {
+			String message = "Book deleted Sucessfully for this Genre";
+			if(request.getParameter("genreId")!=null && request.getParameter("bookId")!=null){
+				Integer genreId = Integer.parseInt(request.getParameter("genreId"));
+				Integer bookId = Integer.parseInt(request.getParameter("bookId"));
+				Genre genre = new Genre();
+				genre.setGenreId(genreId);
+				try {
+					adminService.deleteBookGenre(genre,bookId);
+					request.setAttribute("bookId",bookId);
+					redirectUrl = "/editbooks.jsp";
 					
 				} catch (SQLException e) {
 					e.printStackTrace();
