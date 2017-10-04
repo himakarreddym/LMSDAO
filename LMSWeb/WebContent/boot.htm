@@ -13,8 +13,34 @@ window.setTimeout(function() {
         $(this).remove();
     });
 }, 2000); 
-      
-  </script>
+</script>
+
+
+
+<style type="text/css">
+.jumbotron-billboard .img {
+    margin-bottom: 0px;
+    opacity: 0.2;
+    color: #fff;
+    background: #000 url("https://bootstrapcreative.com/wp-bc/wp-content/uploads/2017/03/learning-story.png") center center;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    overflow: hidden;
+  
+  
+  position:absolute;
+  top:0;left:0;
+  z-index:1;
+}
+.jumbotron {position:relative;padding:50px;}
+.jumbotron .container {z-index:2;
+ position:relative;
+  z-index:2;
+}
+</style>
+
+ 
 
     <title>GCIT Library Management</title>
 
@@ -23,6 +49,8 @@ window.setTimeout(function() {
 
     <!-- Custom styles for this template -->
     <link href="./boot_files/dashboard.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
   </head>
 
   <body>
@@ -37,7 +65,7 @@ window.setTimeout(function() {
           <li class="nav-item active">
           </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="admin.jsp" id="dropdown03" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Administrator</a>
+            <a class="nav-link dropdown-toggle" href="admin.jsp" id="dropdown03" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"> Administrator</a>
             <div class="dropdown-menu" aria-labelledby="dropdown03">
              <a class="dropdown-item" href="author.jsp">Author Services</a>
              <a class="dropdown-item" href="book.jsp">Book Services</a>
@@ -62,12 +90,19 @@ window.setTimeout(function() {
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="./boot_files/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+ <script src="./boot_files/jquery-3.2.1.min.js">
+    </script>
     <script>window.jQuery || document.write('<script src="../../../../assets/js/vendor/jquery.min.js"><\/script>')</script>
     <script src="./boot_files/popper.min.js"></script>
     <script src="./boot_files/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="./boot_files/ie10-viewport-bug-workaround.js"></script>
-  <script src="./boot_files/jquery.min.js"></script>
+  
+  <script>
+$('body').on('click', '[data-toggle="modal"]', function(){
+    $($(this).data("target")+' .modal-body').load($(this).data("remote"));
+}); 
+// $("#myModel .modal-body").load("test.html");
+</script>
 
 </body></html>

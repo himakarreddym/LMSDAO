@@ -10,7 +10,22 @@
                 Come!!Enjoy the fun with us!!!!!</p>
          </div>
     </div>
-      <hr>
+      <hr> 
+      
+      <div class="jumbotron jumbotron-billboard">
+  <div class="img"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1>Jumbotron</h1>
+                <p>
+                    Lorem ipsum is the best
+                </p>
+                <a href="#" class="btn btn-success btn-lg">Sign Up</a>
+            </div>
+        </div>
+    </div>
+</div>    
       <footer>
         <p>© GCIT 2017</p>
       </footer>

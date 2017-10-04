@@ -45,7 +45,7 @@ List<Integer> bookIds = new ArrayList<Integer>();
 			<input type="hidden" name="branchId" value="<%=branchId%>"><br/>
 			</td>
 			<td><button type="submit"
-					<%-- onclick="javascript:location.href='addbranchBook?bookId=<%=book.getBookId()%>&branchId=<%=branchId%>&noofCopies=20'" --%>
+					
 					class="btn btn-danger btn-sm">Add </button></td>
 		</tr> 
 		</form>

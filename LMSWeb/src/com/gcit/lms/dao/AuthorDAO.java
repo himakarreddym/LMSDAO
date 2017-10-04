@@ -48,8 +48,16 @@ public class AuthorDAO extends BaseDAO {
 		return readAll("SELECT * FROM tbl_author", null);
 	}
 	
-	public Integer getAuthorsCount() throws SQLException {
-		return getCount("SELECT count(*) as COUNT FROM tbl_author", null);
+	public Integer getAuthorsCount(String authorName) throws SQLException {
+		if(authorName !=null && !authorName.isEmpty()){
+			authorName = "%"+authorName+"%";
+			return getCount("SELECT count(*) as COUNT FROM tbl_author WHERE authorName like ?", new Object[]{authorName});
+		}
+		else {
+			return getCount("SELECT count(*) as COUNT FROM tbl_author", null);
+		}
+	
+		
 	}
 	
 	public List<Author> readAuthors(String authorName, Integer pageNo) throws SQLException {

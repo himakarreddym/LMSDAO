@@ -6,6 +6,7 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -23,6 +24,7 @@ import com.gcit.lms.entity.Genre;
 import com.gcit.lms.entity.LibraryBranch;
 import com.gcit.lms.entity.Publisher;
 import com.gcit.lms.service.AdminService;
+import com.mysql.fabric.Response;
 
 /**
  * Servlet implementation class AdminServlet
@@ -33,7 +35,8 @@ import com.gcit.lms.service.AdminService;
 	"/addBorrower","/editBorrower","/deleteBorrower","/pageBorrowers",
 	"/addbranch","/pageLibraryBranchs","/editLibraryBranch","/deleteLibraryBranch",
 	"/addBook","/pageBooks","/deleteBook","/editBook","/deleteBookAuthor","/deleteGenreBook1",
-	"/deletebookPublisher","/editdueDate","/pageBookLoans","/addbranchBook","/override"})
+	"/deletebookPublisher","/editdueDate","/pageBookLoans","/addbranchBook","/override",
+	"/searchAuthor"})
 public class AdminServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -114,7 +117,6 @@ public class AdminServlet extends HttpServlet {
 		case "/pageBookLoans":
 			redirectUrl=pageBookLoans(request,response,"/OverrideDuedate.jsp");
 			break;
-	
 		
 			
 		default:
@@ -132,6 +134,7 @@ public class AdminServlet extends HttpServlet {
 			throws ServletException, IOException {
 		String reqUrl = request.getRequestURI().substring(request.getContextPath().length(), request.getRequestURI().length());
 		String redirectUrl = null;
+		Boolean isAjax = Boolean.FALSE;
 		switch (reqUrl) {
 		case "/addAuthor":
 			redirectUrl = addAuthor(request, "/viewauthors.jsp", false);
@@ -188,14 +191,19 @@ public class AdminServlet extends HttpServlet {
 				e.printStackTrace();
 			}
 			break;
+		case "/searchAuthor":
+			searchAuthor(request,response);
+			isAjax = Boolean.TRUE;
+			break;
 		
+			
 		default:
 			break;
 		}
-		
+		if(! isAjax) {
 		RequestDispatcher rd = request.getRequestDispatcher(redirectUrl);
 		rd.forward(request, response);
-		
+		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -852,6 +860,34 @@ public class AdminServlet extends HttpServlet {
 		return null;
 	}
 	
+	
+	
+			
+	private void searchAuthor(HttpServletRequest request,  HttpServletResponse response)
+			throws ServletException, IOException {
+		if(request.getParameter("pageNo")!=null && request.getParameter("searchAuthor")!= null){
+			Integer pageNo = Integer.parseInt(request.getParameter("pageNo"));			
+			StringBuffer str =new StringBuffer();
+			str.append("<table class='table table-striped' id='authorTable'><tr><th>#</th><th>AuthorName</th><th>Books Written</th><th>Edit Author</th><th>Delete Author</th></tr>");
+			try {
+				List<Author> authors = adminService.readAuthors(request.getParameter("searchAuthor"), pageNo);
+				for (Author a : authors) {
+					str.append("<tr><td>"+authors.indexOf(a) + 1+"</td><td>"+a.getAuthorName()+"</td><td><ul style='padding-right: 50%; list-style-type: none;'>");
+					for (Book b : a.getBooks()) {
+						str.append(b.getTitle()+"</li></ul></td>");
+						str.append("<td><button type='button' class='btn btn-primary btn-sm'data-toggle='modal'data-remote='editauthor.jsp?authorId="+a.getAuthorId()+"'data-target='#myModel'>Edit</button><td>");
+						str.append("<button type='button'onclick='javascript:location.href='deleteAuthor?authorId="+a.getAuthorId()+"''class='btn btn-danger btn-sm'>Delete</button></td></tr>");
+					}
+				}
+				str.append("</table>");
+				request.setAttribute("searchAuthor", request.getParameter("searchAuthor"));
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			response.getWriter().write(str.toString());
+		}
+		
+	}
 	
 	
 }

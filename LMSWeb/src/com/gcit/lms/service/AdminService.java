@@ -439,12 +439,12 @@ import com.gcit.lms.entity.LibraryBranch;
 			return null;
 		}
 		
-		public Integer getAuthorsCount() throws SQLException{
+		public Integer getAuthorsCount(String authorName) throws SQLException{
 			Connection conn = null;
 			try {
 				conn = util.getConnection();
 				AuthorDAO adao = new AuthorDAO(conn);
-				return adao.getAuthorsCount();
+				return adao.getAuthorsCount(authorName);
 			} catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException e) {
 				e.printStackTrace();
 			} finally{

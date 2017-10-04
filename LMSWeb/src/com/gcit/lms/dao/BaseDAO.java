@@ -16,7 +16,7 @@ public abstract class BaseDAO<T> {
 	}
 	
 	private Integer pageNo;
-	private Integer pageSize = 10;
+	private Integer pageSize = 2;
 
 	public void save(String sql, Object[] vals) throws SQLException {
 		PreparedStatement pstmt = conn.prepareStatement(sql);
