@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -57,6 +58,7 @@ public class AdminServlet extends HttpServlet {
 			throws ServletException, IOException {
 		String reqUrl = request.getRequestURI().substring(request.getContextPath().length(), request.getRequestURI().length());
 		String redirectUrl = null;
+		Boolean isAjax = Boolean.FALSE;
 		switch (reqUrl) {
 		case "/deleteAuthor":
 			redirectUrl = deleteAuthor(request, response, "/viewauthors.jsp");
@@ -117,14 +119,24 @@ public class AdminServlet extends HttpServlet {
 		case "/pageBookLoans":
 			redirectUrl=pageBookLoans(request,response,"/OverrideDuedate.jsp");
 			break;
+		case "/searchAuthor":
+			try {
+				searchAuthor(request,response);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			isAjax = Boolean.TRUE;
+			break;
 		
 			
 		default:
 			break;
 		}
+		if(! isAjax) {
 		RequestDispatcher rd = request.getRequestDispatcher(redirectUrl);
 		rd.forward(request, response);
-	}
+	}}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
@@ -192,7 +204,12 @@ public class AdminServlet extends HttpServlet {
 			}
 			break;
 		case "/searchAuthor":
-			searchAuthor(request,response);
+			try {
+				searchAuthor(request,response);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			isAjax = Boolean.TRUE;
 			break;
 		
@@ -788,7 +805,9 @@ public class AdminServlet extends HttpServlet {
 			if(request.getParameter("authorName").length() > 45){
 				message = "<div class=\"alert alert-danger alert-dismissable custom-alert\" role=\"alert\"><strong>Warning!</strong>Author Name cannot be more than 45 chars</div>";
 				if(editMode) {
+					
 					request.setAttribute("authorId", Integer.parseInt(request.getParameter("authorId")));
+			
 					redirectUrl = "/editauthor.jsp";
 				}
 				else {
@@ -808,6 +827,7 @@ public class AdminServlet extends HttpServlet {
 					author.setAuthorId(Integer.parseInt(request.getParameter("authorId")));
 				}
 				try {
+					request.setAttribute("pageNo", 1);
 					adminService.saveAuthor(author);
 				} catch (SQLException e) {
 					e.printStackTrace();
@@ -822,6 +842,7 @@ public class AdminServlet extends HttpServlet {
 			redirectUrl = "/addauthor.jsp";
 			}
 		}
+		request.setAttribute("pageNo", 1);
 		request.setAttribute("statusMessage", message);
 		return redirectUrl;
 	}
@@ -864,23 +885,63 @@ public class AdminServlet extends HttpServlet {
 	
 			
 	private void searchAuthor(HttpServletRequest request,  HttpServletResponse response)
-			throws ServletException, IOException {
+			throws ServletException, IOException, SQLException {
 		if(request.getParameter("pageNo")!=null && request.getParameter("searchAuthor")!= null){
 			Integer pageNo = Integer.parseInt(request.getParameter("pageNo"));			
 			StringBuffer str =new StringBuffer();
+			if(request.getParameter("pageNo")!=null){
+				Integer totalCount =-1;
+				if(request.getParameter("searchAuthor") != null && ! request.getParameter("searchAuthor").isEmpty()){
+					 totalCount = adminService.getAuthorsCount(request.getParameter("searchAuthor"));
+				}
+				else{
+					 totalCount = adminService.getAuthorsCount(null);
+				}
+				int numOfPages = 0;
+				if(totalCount%4 > 0){
+					numOfPages = totalCount/4 +1;
+				}else{
+					numOfPages = totalCount/4;
+				}
+				
+				
+				
+				str.append("<h4 style=\"padding-left: 20%\">Authors List in LMS&nbsp;&nbsp;&nbsp;&nbsp; Total Authors in LMS:"+totalCount+"Authors</h4><br>");
+				str.append("<nav aria-label=\"Page navigation example\"><ul class=\"pagination\" style=\"padding-left: 26%\"><li class=\"page-item\"><a class=\"page-link\" href=\"#\"aria-label=\"Previous\" onclick='searchAuthors("+(pageNo-1)+"); return false;'");
+				if(pageNo == 1)
+					str.append(" style='display:none;' ");
+				str.append("> <span aria-hidden=\"true\">&laquo;</span> <spanclass=\"sr-only\">Previous</span></a></li>");
+				for(int i=1; i<=numOfPages; i++){
+					if(request.getParameter("searchAuthor") != null && ! request.getParameter("searchAuthor").isEmpty()){
+						//str.append("<li class=\"page-item\"><a class=\"page-link\" href=\"searchAuthor?pageNo="+i+"&searchAuthor="+request.getParameter("searchAuthor")+"\">"+i+"</a></li>");
+
+						str.append("<li class=\"page-item\" ><a class=\"page-link\" href=\"#\" onclick='searchAuthors("+i+"); return false;'>"+i+"</a></li>");	
+					}
+					else {
+						str.append("<li class=\"page-item\" ><a class=\"page-link\" href=\"#\" onclick='searchAuthors("+i+"); return false;'>"+i+"</a></li>");
+					}
+				
+				}
+				str.append("<li class=\"page-item\"><a class=\"page-link\" href=\"#\"aria-label=\"Next\" onclick='searchAuthors("+(pageNo+1)+"); return false;'");
+				if(pageNo == numOfPages)
+					str.append(" style='display:none;' ");
+				str.append("> <span aria-hidden=\"true\">&raquo;</span> <spanclass=\"sr-only\">Next</span></a></li></ul>");
+				
 			str.append("<table class='table table-striped' id='authorTable'><tr><th>#</th><th>AuthorName</th><th>Books Written</th><th>Edit Author</th><th>Delete Author</th></tr>");
 			try {
 				List<Author> authors = adminService.readAuthors(request.getParameter("searchAuthor"), pageNo);
 				for (Author a : authors) {
-					str.append("<tr><td>"+authors.indexOf(a) + 1+"</td><td>"+a.getAuthorName()+"</td><td><ul style='padding-right: 50%; list-style-type: none;'>");
+					Integer index = (authors.indexOf(a) + 1);
+					str.append("<tr><td>"+index+"</td><td>"+a.getAuthorName()+"</td><td><ul style='padding-right: 50%; list-style-type: none;'>");
 					for (Book b : a.getBooks()) {
-						str.append(b.getTitle()+"</li></ul></td>");
-						str.append("<td><button type='button' class='btn btn-primary btn-sm'data-toggle='modal'data-remote='editauthor.jsp?authorId="+a.getAuthorId()+"'data-target='#myModel'>Edit</button><td>");
-						str.append("<button type='button'onclick='javascript:location.href='deleteAuthor?authorId="+a.getAuthorId()+"''class='btn btn-danger btn-sm'>Delete</button></td></tr>");
+						str.append("<li>"+b.getTitle()+"</li>");
 					}
+					str.append("</ul></td>");
+					str.append("<td><button type='button' class='btn btn-primary btn-sm'data-toggle='modal'data-remote='editauthor.jsp?authorId="+a.getAuthorId()+"'data-target='#myModel'>Edit</button><td>");
+					str.append("<button type='button'onclick='javascript:location.href='deleteAuthor?authorId="+a.getAuthorId()+"' class='btn btn-danger btn-sm'>Delete</button></td>");
+					str.append("</tr>");
 				}
 				str.append("</table>");
-				request.setAttribute("searchAuthor", request.getParameter("searchAuthor"));
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -888,6 +949,5 @@ public class AdminServlet extends HttpServlet {
 		}
 		
 	}
-	
-	
-}
+		}
+	}

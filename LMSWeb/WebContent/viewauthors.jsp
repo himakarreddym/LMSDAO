@@ -15,10 +15,10 @@
 		 totalCount = service.getAuthorsCount(null);
 	}
 	int numOfPages = 0;
-	if(totalCount%2 > 0){
-		numOfPages = totalCount/2 +1;
+	if(totalCount%4 > 0){
+		numOfPages = totalCount/4 +1;
 	}else{
-		numOfPages = totalCount/2;
+		numOfPages = totalCount/4;
 	}
 	List<Author> authors = new ArrayList<>();
 	if(request.getAttribute("authors")!=null){
@@ -29,22 +29,21 @@
 %>
 ${statusMessage}
 
+
+
 <script>
-$(document).ready(function (){
-    $("#searchAuthor1").click(function(){
-  	$.ajax({
-		  method: 'POST',
-		  url: "searchAuthor",
-		  data: {
-			  searchAuthor : $('#searchAuthor').val(),
-			  pageNo : $('#pageNo').val()
-		  }
+	function searchAuthors(pageNo) {
+		$.ajax({
+			method : "POST",
+			url : "searchAuthor",
+			data : {
+				searchAuthor : $('#searchAuthor').val(),
+				pageNo: pageNo
+			}
 		}).done(function(data) {
-			console.log(data);
-		  $('#authorTable').html(data);
+			  $('#authorInfo').html(data);
 		});
-    });
-});
+	}
 </script>
 
 
@@ -52,27 +51,38 @@ $(document).ready(function (){
   <div class="img"></div>
     <div class="container">
         <div>
-        
-
+ 
+ <button class="btn btn-outline-danger my-2 my-sm-0" type="button" id="searchAuthor1" onclick="searchAuthors(1);" style="float:right;">Search</button>       
+<div style="float: right;">
 	<input class="form-control mr-sm-2" type="text"
 		placeholder="Search Author" aria-label="Search" id="searchAuthor" name="searchAuthor">
 	<input type="hidden" value="1" name="pageNo" id="pageNo"></input>
-	<button class="btn btn-outline-danger my-2 my-sm-0" type="button" id="searchAuthor1">Search</button>
-	
-	
+
+</div>	
+
 <br/>
 
-
-<div class="container" style="text-align: center; margin-top: 45px;">
+<div id="tabletest"></div>
+<div class="container" id="authorInfo" style="text-align: center; ">
 	<h4 style="padding-left: 20%">
-		Authors List in LMS&nbsp;&nbsp;&nbsp;&nbsp; Total Authors in LMS:
+		 Total Authors in LMS:
 		<%=totalCount%>
+		<%int pageNo = 1;
+		if(request.getParameter("pageNo") !=null){
+			pageNo= Integer.parseInt(request.getParameter("pageNo")); } %>
 		Authors
 	</h4>
 	<br>
 	<nav aria-label="Page navigation example">
-		<ul class="pagination" style="padding-left: 26%">
-			<li class="page-item"><a class="page-link" href="#"
+		<ul class="pagination" style="padding-left: 38%">
+			<li class="page-item"
+			<%
+					if(pageNo == 1)
+					{%>
+						style="display:none"
+					<%}
+				%>
+			><a class="page-link" href="pageAuthors?pageNo=<%=(pageNo-1) %>"
 				aria-label="Previous"> <span aria-hidden="true">&laquo;</span> <span
 					class="sr-only">Previous</span>
 			</a></li>
@@ -87,13 +97,21 @@ $(document).ready(function (){
 			<%} %>
 
 			<%} %>
-			<li class="page-item"><a class="page-link" href="#"
+			<li class="page-item" 
+			<%
+					if(pageNo == numOfPages)
+					{%>
+						style="display:none"
+					<%}
+				%>
+			
+			><a class="page-link" href="pageAuthors?pageNo=<%=(pageNo+1) %>"
 				aria-label="Next"> <span aria-hidden="true">&raquo;</span> <span
 					class="sr-only">Next</span>
 			</a></li>
 		</ul>
 	</nav>
-	<table class="table table-striped" id="authorTable">
+	 <table class="table table-striped" id="authorTable">
 		<tr>
 			<th>#</th>
 			<th>Author Name</th>
@@ -132,7 +150,7 @@ $(document).ready(function (){
 		<%
 			}
 		%>
-	</table>
+	</table> 
 </div>
 
         </div>
@@ -144,10 +162,11 @@ $(document).ready(function (){
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal"
-					aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
+				<h5 class="modal-title">Edit Author</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
 			</div>
 			<div class="modal-body">
 				<p></p>

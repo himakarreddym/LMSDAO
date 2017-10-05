@@ -16,9 +16,10 @@ List<Book> authorBooks = author.getBooks();
 		<br/>Enter Author Name to Edit: <input type="text" name="authorName" value="<%=author.getAuthorName()%>"><br />
 		<input type="hidden" name="authorId" value="<%=author.getAuthorId()%>"><br/>
 		
+		
 		<label for="sel1">Select Books from list Below: </label>
-        	<div class="form-group" style="width:90%;display:inline-block;padding-left: 20%">
-		<select class="form-group" id="sel1" multiple="multiple" size="10" name="bookIds" style="width:70%;">
+        	<div class="form-group" style="display:inline-block;padding-left: 5%">
+		<select class="form-group" id="sel1" multiple="multiple" size="10" name="bookIds" >
 			<%for(Book b: books) {
 			if(! authorBooks.contains(b)) {
 			%>
@@ -38,15 +39,19 @@ List<Book> authorBooks = author.getBooks();
     			
     			<% 	out.println(b.getTitle()); %>	 <br />
     			 </td>
-    			 <td><button type="button"
-					onclick="javascript:location.href='deleteAuthorBook?authorId=<%=author.getAuthorId()%>&bookId=<%=b.getBookId() %>'"
-					class="btn btn-danger btn-sm">Delete</button></td>
+    			 <td>
+    			 	   <button type="button" class="btn btn-primary btn-sm"
+					data-toggle="modal"
+					data-remote="deleteAuthorBook?authorId=<%=author.getAuthorId()%>&bookId=<%=b.getBookId() %>"
+					data-target="#myModel">Delete
+					</button>
+			</td>
     		</tr>
 				
 		<%	}%>
          </table>
          
-         
+      
 		 
 		<br/>
             
