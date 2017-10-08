@@ -79,9 +79,12 @@ ${statusMessage}
 					<%	} %> 
                         </ul> 
 			</td>
-			<td><button type="button"
-					onclick="javascript:location.href='editbooks.jsp?bookId=<%=b.getBookId()%>'"
-					class="btn btn-primary btn-sm">Edit</button></td>
+			<td>
+						<button type="button" class="btn btn-primary btn-sm"
+					data-toggle="modal"
+					data-remote="editbooks.jsp?bookId=<%=b.getBookId()%>"
+					data-target="#myModel">Edit</button>
+			</td>
 			<td><button type="button"
 					onclick="javascript:location.href='deleteBook?bookId=<%=b.getBookId()%>'"
 					class="btn btn-danger btn-sm">Delete</button></td>
@@ -90,4 +93,22 @@ ${statusMessage}
 			}
 		%>
 	</table>
+</div>
+<!-- Model -->
+<div class="modal fade" id="myModel" tabindex="-1" role="dialog"
+	aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Edit Author</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+			</div>
+			<div class="modal-body">
+				<p></p>
+			</div>
+		</div>
+	</div>
 </div>

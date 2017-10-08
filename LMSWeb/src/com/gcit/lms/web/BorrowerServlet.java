@@ -3,7 +3,6 @@ package com.gcit.lms.web;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;

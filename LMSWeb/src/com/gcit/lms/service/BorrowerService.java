@@ -3,7 +3,6 @@ package com.gcit.lms.service;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
-
 import com.gcit.lms.dao.BookCopiesDAO;
 import com.gcit.lms.dao.BookLoansDAO;
 import com.gcit.lms.dao.BorrowerDAO;

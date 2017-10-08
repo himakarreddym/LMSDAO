@@ -20,7 +20,6 @@ LibraryBranch branch = libService.readbranchbyPK(Integer.parseInt(request.getPar
 		<label> Branch Address : </label>  <input type="text" name="branchAddress" value="<%=branch.getBranchAddress()%>"><br />
 		
 		
-		<!-- Branch name and branch id is coming but branch address is null -->
 		
 		<input type="hidden" name="branchId" value="<%=branch.getBranchId()%>"><br/>
         
